@@ -1,0 +1,18 @@
+export const constants = {
+  HOST: process.env.SMTP_HOST,
+  PORT: process.env.SMTP_PORT,
+  USER: process.env.SMTP_USER,
+  PASS: process.env.SMTP_PASS,
+  EMAIL_FROM: process.env.EMAIL_FROM,
+  SES_FROM: process.env.SES_FROM,
+  SES_USER: process.env.SES_USER,
+  SES_PASS: process.env.SES_PASS,
+  SES_HOST: process.env.SES_HOST,
+  EMAIL_TO: process.env.EMAIL_TO,
+  KIRIM_AUTH_ID: process.env.KIRIM_AUTH_ID,
+  KIRIM_AUTH_TOKEN: process.env.KIRIM_AUTH_TOKEN,
+  TO_HASH: `{KIRIM_AUTH_ID}::{KIRIM_AUTH_TOKEN}::{UNIX_TIME}`,
+  GET_KIRIM_LIST: process.env.GET_LIST,
+  SUBSCRIBER_API: process.env.SUBSCRIBER_API,
+  SUBSCRIBER_EMAIL: process.env.SUBSCRIBER_EMAIL,
+};

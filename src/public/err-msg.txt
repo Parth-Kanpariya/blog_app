@@ -1,0 +1,34 @@
+err_0	Internal server error. Please try again after sometime
+err_001 Admin secret is wrong
+***** AUTH API ***** 
+err_1	First name is required
+err_2	Last name is required
+err_3	Please provide a valid secret
+err_4	Phone Number is required
+err_5	Country is required
+err_6	Country code is required
+err_7	Invalid email address
+err_8	Password must be at least 8 characters in length
+err_9	Passwords don't match
+err_10	This email is already registered
+err_11	User does not belong to any account
+err_12	Your account E-mail address is not verified. We have send new verification link to your email address. Please check mail box and verify your email
+err_13	Invalid email or password
+err_14	Your account is deleted
+err_15	Your account is deactivated. Please Contact us
+err_16	Please login with google account
+err_17	Please login with facebook account
+err_18	Password reset token is not valid
+err_19	Old password does not match
+err_20 New Password and Confirm Password does not match
+
+Success	
+	
+succ_1	You have successfully registered
+succ_2	You have login successfully
+succ_3	Password reset email Sent
+succ_4	Your password has been changed successfully
+succ_5	Your email is already verified
+succ_6	Account fetched successfully
+succ_7	Account updated successfully
+succ_8  Account deleted successfully
