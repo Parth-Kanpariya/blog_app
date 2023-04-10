@@ -5,20 +5,20 @@ import './blogCard.css';
 import { useNavigate } from 'react-router-dom';
 
 function BlogCard(props) {
-  const { description, title, photo, username } = props.blog;
+  const { description, title, image, user, blog_id } = props.blog;
   const navigate = useNavigate();
   const handleBlogClick = () => {
-    navigate('/blog');
+    navigate(`/blog/${blog_id}`);
   };
   return (
     <div style={{ cursor: 'pointer ', margin: '1rem' }} onClick={handleBlogClick}>
       <hr />
       <Row className="user-profile">
         <Col>
-          <RoundImage className="profile-photo" />
+          <RoundImage image={image} className="profile-photo" />
         </Col>{' '}
         <Col>
-          <h2 className="username"> {username} </h2> <p className="user-bio"> My bio </p>{' '}
+          <h2 className="username"> {user[0].firstname} </h2> <p className="user-bio"> My bio </p>{' '}
         </Col>{' '}
       </Row>{' '}
       <Row className="blog-description">

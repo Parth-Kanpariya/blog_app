@@ -20,6 +20,7 @@ app.set('trust proxy', true);
 middlewaresConfig(app);
 app.use('/static', express.static(APP_CONST.PUBLIC_PATH));
 app.use('/static', express.static(APP_CONST.PROFILE_PATH));
+app.use('/static', express.static(APP_CONST.BLOG_PATH));
 
 app.use(httpContext.middleware);
 

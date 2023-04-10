@@ -1,11 +1,11 @@
-import crypto from "crypto";
-import { encrypt, decrypt, orderOTPGenerator } from "../../utils/utility";
-import userModel from "../../models/user";
-import { logger, level } from "../../config/logger";
-import { sendMailToUser } from "../../controllers/user/user.controller";
-import JWTAuth from "../../services/jwt_auth/jwt_auth";
-import _ from "lodash";
-import { constants as APP_CONST } from "../../constant/application";
+import crypto from 'crypto';
+import { encrypt, decrypt, orderOTPGenerator } from '../../utils/utility';
+import userModel from '../../models/user';
+import { logger, level } from '../../config/logger';
+import { sendMailToUser } from '../../controllers/user/user.controller';
+import JWTAuth from '../../services/jwt_auth/jwt_auth';
+import _ from 'lodash';
+import { constants as APP_CONST } from '../../constant/application';
 
 export const getUserData = async (filter = {}) => {
   let userData = await userModel.get(filter);
@@ -29,12 +29,12 @@ export const verifyUserOTP = async (body, userDoc) => {
   if (userDoc && userDoc.otp && userDoc.otp === otp) {
     const tokenFilter = { email, otp };
     const updateUserFields = {
-      status: 1,
+      status: 1
     };
-    const removeFields = { verification_token: "", otp: "" };
+    const removeFields = { verification_token: '', otp: '' };
     await userModel.update(tokenFilter, {
       $set: updateUserFields,
-      $unset: removeFields,
+      $unset: removeFields
     });
     return true;
   } else {
@@ -45,13 +45,13 @@ export const verifyUserOTP = async (body, userDoc) => {
 export const addUser = async (body) => {
   logger.log(level.info, `>> addUser body=${JSON.stringify(body)}`);
   const encryptPassword = await encrypt(body.password);
-  const verificationToken = crypto.randomBytes(32).toString("hex");
+  const verificationToken = crypto.randomBytes(32).toString('hex');
   const otp = orderOTPGenerator();
   const admin = await userModel.add({
     ...body,
     password: encryptPassword,
     verification_token: verificationToken,
-    otp,
+    otp
   });
   return admin;
 };
@@ -65,13 +65,13 @@ export const verifyUserEmail = async (params) => {
     // const newVerificationToken = crypto.randomBytes(32).toString('hex');
     const updateUserFields = {
       //   verification_token: newVerificationToken,
-      status: 1,
+      status: 1
     };
 
-    const removeFields = { verification_token: "", otp: "" };
+    const removeFields = { verification_token: '', otp: '' };
     let user = await userModel.update(tokenFilter, {
       $set: updateUserFields,
-      $unset: removeFields,
+      $unset: removeFields
     });
     return user;
   }
@@ -83,7 +83,7 @@ export const loginUser = async (body) => {
   let { email, password } = body;
 
   const [adminDoc] = await userModel.get({
-    email,
+    email
   });
 
   const decryptPassword = await decrypt(password, adminDoc.password);
@@ -91,7 +91,7 @@ export const loginUser = async (body) => {
     const tokenPayload = {
       id: adminDoc._id,
       admin_id: adminDoc.admin_id,
-      email: adminDoc.email,
+      email: adminDoc.email
     };
     const auth = new JWTAuth();
     const accessToken = await auth.createToken(tokenPayload);
@@ -99,12 +99,12 @@ export const loginUser = async (body) => {
     let payload = {
       ...tokenPayload,
       accessToken,
-      user_id:adminDoc.user_id
+      user_id: adminDoc.user_id
     };
 
     object = {
-      message: "succ_2",
-      data: payload,
+      message: 'succ_2',
+      data: payload
     };
   }
   let data = { object, decryptPassword };
@@ -116,38 +116,32 @@ export const facebookLogIn = async (body) => {
 
   let data = {};
   const isEmailExist = await userModel.isExist({
-    email,
+    email
   });
   if (isEmailExist) {
     const [userDoc] = await userModel.get({ email });
-    if (
-      userDoc.oauth_provider === "local" ||
-      userDoc.oauth_provider === "google"
-    ) {
+    if (userDoc.oauth_provider === 'local' || userDoc.oauth_provider === 'google') {
       data = {
         error: true,
-        message: "err_10",
+        message: 'err_10'
       };
       return data;
     }
     const auth = new JWTAuth();
     const tokenPayload = {
       id: userDoc._id,
-      email: userDoc.email,
+      email: userDoc.email
     };
 
     const accessToken = await auth.createToken(tokenPayload);
-    logger.log(
-      level.debug,
-      `successfull addUser email = ${email} jwt token =${accessToken}`
-    );
+    logger.log(level.debug, `successfull addUser email = ${email} jwt token =${accessToken}`);
     data = {
       error: false,
-      message: "succ_2",
+      message: 'succ_2',
       data: {
         ...tokenPayload,
-        accessToken,
-      },
+        accessToken
+      }
     };
     return data;
   } else {
@@ -156,28 +150,25 @@ export const facebookLogIn = async (body) => {
       firstname,
       lastname,
       profile_image,
-      oauth_provider: "facebook",
-      status: 1,
+      oauth_provider: 'facebook',
+      status: 1
     });
 
     logger.log(level.debug, `>> insertedUser = ${insertedUser}`);
     const auth = new JWTAuth();
     const tokenPayload = {
       id: insertedUser._id,
-      email: insertedUser.email,
+      email: insertedUser.email
     };
     const accessToken = await auth.createToken(tokenPayload);
-    logger.log(
-      level.debug,
-      `successfull addUser email = ${email} jwt token = ${accessToken}`
-    );
+    logger.log(level.debug, `successfull addUser email = ${email} jwt token = ${accessToken}`);
     data = {
       error: false,
-      message: "succ_2",
+      message: 'succ_2',
       data: {
         ...tokenPayload,
-        accessToken,
-      },
+        accessToken
+      }
     };
     return data;
   }
@@ -188,19 +179,16 @@ export const googleLogIn = async (body) => {
   let data = {};
 
   const isEmailExist = await userModel.isExist({
-    email,
+    email
   });
 
   if (isEmailExist) {
     const [userDoc] = await userModel.get({ email });
 
-    if (
-      userDoc.oauth_provider === "local" ||
-      userDoc.oauth_provider === "facebook"
-    ) {
+    if (userDoc.oauth_provider === 'local' || userDoc.oauth_provider === 'facebook') {
       data = {
         error: true,
-        message: "err_10",
+        message: 'err_10'
       };
       return data;
     }
@@ -208,21 +196,18 @@ export const googleLogIn = async (body) => {
     const auth = new JWTAuth();
     const tokenPayload = {
       id: userDoc._id,
-      email: userDoc.email,
+      email: userDoc.email
     };
 
     const accessToken = await auth.createToken(tokenPayload);
-    logger.log(
-      level.debug,
-      `successfull addUser email = ${email} jwt token = ${accessToken}`
-    );
+    logger.log(level.debug, `successfull addUser email = ${email} jwt token = ${accessToken}`);
     data = {
       error: false,
-      message: "succ_2",
+      message: 'succ_2',
       data: {
         ...tokenPayload,
-        accessToken,
-      },
+        accessToken
+      }
     };
     return data;
   } else {
@@ -231,28 +216,25 @@ export const googleLogIn = async (body) => {
       firstname,
       lastname,
       profile_image,
-      oauth_provider: "google",
-      status: 1,
+      oauth_provider: 'google',
+      status: 1
     });
     logger.log(level.debug, `>> insertedUser= ${insertedUser}`);
 
     const auth = new JWTAuth();
     const tokenPayload = {
       id: insertedUser._id,
-      email: insertedUser.email,
+      email: insertedUser.email
     };
     const accessToken = await auth.createToken(tokenPayload);
-    logger.log(
-      level.debug,
-      `successfull addUser email= ${email} jwt token = ${accessToken}`
-    );
+    logger.log(level.debug, `successfull addUser email= ${email} jwt token = ${accessToken}`);
     data = {
       error: false,
-      message: "succ_2",
+      message: 'succ_2',
       data: {
         ...tokenPayload,
-        accessToken,
-      },
+        accessToken
+      }
     };
 
     return data;
@@ -260,24 +242,24 @@ export const googleLogIn = async (body) => {
 };
 
 export const sendVerificationEmail = async (email) => {
-  const newVerificationToken = crypto.randomBytes(32).toString("hex");
+  const newVerificationToken = crypto.randomBytes(32).toString('hex');
   const otp = orderOTPGenerator();
   const updateUserField = {
     verification_token: newVerificationToken,
     otp,
-    verify: false,
+    verify: false
   };
   const updatedUser = await userModel.update({ email }, updateUserField);
   logger.log(level.info, `>> sendVerificationEmail updatedUser=${updatedUser}`);
 
   sendMailToUser(updatedUser);
 
-  throw new Error("err_12");
+  throw new Error('err_12');
 };
 
 export const forgetPassword = async (params) => {
   let { email } = params;
-  const token = crypto.randomBytes(32).toString("hex");
+  const token = crypto.randomBytes(32).toString('hex');
   let password_reset_otp = orderOTPGenerator();
   const updateToken = { password_reset_token: token, password_reset_otp };
   const updateUser = await userModel.update({ email }, updateToken);
@@ -289,12 +271,12 @@ export const changePassword = async (body) => {
   const tokenFilter = { password_reset_token: token };
   const encryptPassword = await encrypt(newPassword);
   const updatePassword = {
-    password: encryptPassword,
+    password: encryptPassword
   };
-  let removeField = { password_reset_token: "", password_reset_otp: "" };
+  let removeField = { password_reset_token: '', password_reset_otp: '' };
   const updatedUser = await userModel.update(tokenFilter, {
     $set: updatePassword,
-    $unset: removeField,
+    $unset: removeField
   });
   return updatedUser;
 };
@@ -309,12 +291,12 @@ export const resetPwdOTP = async (body, adminDoc) => {
     const tokenFilter = { password_reset_otp, email };
     const encryptPassword = await encrypt(newPassword);
     const updatePassword = {
-      password: encryptPassword,
+      password: encryptPassword
     };
-    let removeField = { password_reset_token: "", password_reset_otp: "" };
+    let removeField = { password_reset_token: '', password_reset_otp: '' };
     await userModel.update(tokenFilter, {
       $set: updatePassword,
-      $unset: removeField,
+      $unset: removeField
     });
     return true;
   } else {
@@ -324,17 +306,11 @@ export const resetPwdOTP = async (body, adminDoc) => {
 
 export const userAccount = async (userId) => {
   let excludedFields =
-    "-password_reset_token -role -verify -is_active -password -is_deleted -verification_token -created_at -updated_at -__v";
+    '-password_reset_token -role -verify -is_active -password -is_deleted -verification_token -created_at -updated_at -__v';
 
-  let [getMyAccount] = await userModel.get(
-    { user_id: userId, status: 1 },
-    excludedFields
-  );
+  let [getMyAccount] = await userModel.get({ user_id: userId, status: 1 }, excludedFields);
 
-  logger.log(
-    level.debug,
-    `>> adminAccount account data ${JSON.stringify(getMyAccount)} `
-  );
+  logger.log(level.debug, `>> adminAccount account data ${JSON.stringify(getMyAccount)} `);
 
   return getMyAccount;
 };
@@ -342,7 +318,7 @@ export const userAccount = async (userId) => {
 export const updateAccount = async (filter, updateData) => {
   updateData = _.pickBy(updateData);
   let updatedUser = await userModel.update(filter, {
-    $set: updateData,
+    $set: updateData
   });
 
   return updatedUser;
@@ -350,15 +326,8 @@ export const updateAccount = async (filter, updateData) => {
 
 export const updateMyAccount = async (body, filterUser, files) => {
   logger.log(level.info, `<< updateMyAccount`);
-  const {
-    firstname,
-    lastname,
-    country,
-    country_code,
-    phone_number,
-    oldPassword,
-    newPassword,
-  } = body;
+  const { firstname, lastname, country, country_code, phone_number, oldPassword, newPassword } =
+    body;
 
   let { isUser, userData } = await getUserData(filterUser);
   if (isUser) {
@@ -367,17 +336,14 @@ export const updateMyAccount = async (body, filterUser, files) => {
       lastname,
       phone_number,
       country,
-      country_code,
+      country_code
     };
 
     if (files) {
       if (files.profile_image) {
         let fileDoc = files.profile_image;
-        files.profile_image.mv(
-          APP_CONST.PROFILE_PATH + `/profile-image-${fileDoc.name}`
-        );
-        let url =
-          APP_CONST.HOST_URL + "/static" + `/profile-image-${fileDoc.name}`;
+        files.profile_image.mv(APP_CONST.PROFILE_PATH + `/profile-image-${fileDoc.name}`);
+        let url = 'http://localhost:3000' + '/static' + `/profile-image-${fileDoc.name}`;
         updateMyAccountData.profile_image = url;
       }
     }
@@ -425,7 +391,7 @@ export const updateMyAccount = async (body, filterUser, files) => {
       } else {
         const data = {
           error: false,
-          message: "err_19",
+          message: 'err_19'
         };
         return data;
       }
@@ -434,21 +400,18 @@ export const updateMyAccount = async (body, filterUser, files) => {
     let updateduserData = await updateAccount(filterUser, updateMyAccountData);
     // if (!updateduser.verify) sendMailToUser(email, updateduser);
 
-    logger.log(
-      level.info,
-      `>> updateMyAccount=${JSON.stringify(updateduserData)}`
-    );
+    logger.log(level.info, `>> updateMyAccount=${JSON.stringify(updateduserData)}`);
     const data = {
       error: false,
-      message: "succ_7",
-      data: updateduserData,
+      message: 'succ_7',
+      data: updateduserData
     };
 
     return data;
   } else {
     const data = {
       error: true,
-      message: "err_11",
+      message: 'err_11'
     };
     return data;
   }

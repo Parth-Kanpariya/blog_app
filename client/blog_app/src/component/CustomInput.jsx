@@ -26,19 +26,21 @@ export const CustomSearchInput = ({ label, ...props }) => {
   );
 };
 
-export const CustomTextArea = ({ label, field, ...props }) => {
+export const CustomTextArea = ({ label, field, form: { touched, errors }, ...props }) => {
+  const isError = touched[field.name] && errors[field.name];
   return (
     <>
       <label>{label}</label>
 
       <textarea
-        className={`text-input}`}
+        className={`text-input ${isError ? 'error' : ''}}`}
         {...field}
         {...props}
         autoComplete="off"
         rows="5"
         cols="35"
       />
+      {isError && <div className="error">{isError}</div>}
     </>
   );
 };

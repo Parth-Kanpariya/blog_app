@@ -29,6 +29,11 @@ const schema = {
     {
       type: String
     }
+  ],
+  tags: [
+    {
+      type: String
+    }
   ]
 };
 

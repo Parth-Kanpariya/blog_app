@@ -6,12 +6,26 @@ import { validate } from '../../validator/blogs.validator';
 import { constants as VALIDATOR } from '../../constant/validator/blogs';
 import * as blogsController from '../../controllers/blogs/blogs.controller';
 const routes = new Router({ mergeParams: true });
+// fileFilter: (req, file, cb) => {
+//   if (
+//     file.mimetype == 'image/png' ||
+//     file.mimetype == 'image/jpg' ||
+//     file.mimetype == 'image/jpeg'
+//   ) {
+//     console.log('++++++++++++');
+//     cb(null, true);
+//   } else {
+//     cb(null, false);
+//     return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+//   }
+// }
 
 const PATH = {
   CREATE_BLOG: '/',
   GET_BLOGS: '/',
   UPDATE_BLOG: '/:id',
-  DELETE_BLOG: '/:id'
+  DELETE_BLOG: '/:id',
+  GET_BLOG: '/:id'
 };
 
 routes.use(appAuthMiddleware);
@@ -27,6 +41,12 @@ routes.post(PATH.CREATE_BLOG, validate(VALIDATOR.CREATE_BLOG), blogsController.c
  * @access PRIVATE
  */
 routes.get(PATH.GET_BLOGS, blogsController.getBlogs);
+/**
+ * @api {GET} /api/blogs/:id
+ * @desc GET Blog API
+ * @access PRIVATE
+ */
+routes.get(PATH.GET_BLOG, blogsController.getBlogById);
 /**
  * @api {PUT} /api/blogs/:id
  * @desc Update Blog API

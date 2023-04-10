@@ -1,22 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import RoundImage from './RoundImage';
 import logo from '../logo192.png';
-import { Col, Collapse, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { flatMap } from 'lodash';
 import './header.css';
 import { useNavigate } from 'react-router-dom';
+import { getUser } from '../services/authService';
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [login, setLogin] = useState(false);
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
   const toggle = () => setIsOpen(!isOpen);
   const handleHideDropdown = () => setIsOpen(false);
-  const login = true;
   const hidden = 'hidden';
+  const token = localStorage.token;
+  const userId = localStorage.userId;
+  const user = localStorage.user;
+
+  useEffect(() => {
+    if (token && userId && user) {
+      setLogin(true);
+    }
+    const fetchUser = async () => {
+      const user = await getUser();
+      if (user.status === 200) {
+        setUserData(user.data.data.data);
+      }
+    };
+    fetchUser();
+  }, [token]);
+
   const handleLogOutClick = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('userId');
+    setLogin(false);
     navigate('/login');
   };
   const handleProfileClick = () => {
@@ -26,6 +46,7 @@ function Header() {
   const handleLogoClick = () => {
     navigate('/');
   };
+  console.log(user);
 
   return (
     <Row
@@ -49,14 +70,14 @@ function Header() {
           <DropdownToggle
             tag="div"
             onClick={toggle}
-            dataToggle="dropdown"
-            ariaExpanded={isOpen}
+            data-toggle="dropdown"
+            aria-expanded={isOpen}
             className="profile-toggle">
-            <RoundImage />
-            <h3 className="profile-username"> Parth </h3>{' '}
+            <RoundImage img={user.profile_image} />
+            <h3 className="profile-username">{JSON.parse(localStorage.user)?.email}</h3>
           </DropdownToggle>{' '}
           {isOpen === true && (
-            <DropdownMenu right className="profile-menu">
+            <DropdownMenu end className="profile-menu">
               <DropdownItem className="dropdown-item" onClick={handleProfileClick}>
                 {' '}
                 Profile{' '}

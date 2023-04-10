@@ -9,7 +9,7 @@ function Following() {
     <div>
       {list.map((no) => {
         return (
-          <Row className="user-profile">
+          <Row className="user-profile" key={no}>
             <Col>
               <RoundImage className="profile-photo" />
             </Col>{' '}

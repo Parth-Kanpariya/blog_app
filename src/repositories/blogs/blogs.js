@@ -3,26 +3,27 @@ import { logger, level } from '../../config/logger';
 import blogModel from '../../models/blogs';
 
 // create blog
-export const createBlog = async (body, userId) => {
+export const createBlog = async (body, imageUrl, userId) => {
   logger.log(level.info, `>> Create Job repo body=${JSON.stringify(body)}`);
   let data = {};
-  const blogExist = await blogModel.isExist({
-    ...body,
-    description: body.description.toLowerCase(),
-    user_id: userId
-  });
-  if (blogExist) {
-    data = {
-      error: true,
-      message: 'blog Already exist!'
-    };
-    return data;
-  }
+  // const blogExist = await blogModel.isExist({
+  //   ...body,
+  //   description: body.body.toLowerCase(),
+  //   user_id: userId
+  // });
+  // if (blogExist) {
+  //   data = {
+  //     error: true,
+  //     message: 'blog Already exist!'
+  //   };
+  //   return data;
+  // }
 
   const newblog = await blogModel.add({
     ...body,
     description: body.description.toLowerCase(),
-    user_id: userId
+    user_id: userId,
+    image: imageUrl
   });
   data = {
     error: false,
@@ -36,11 +37,29 @@ export const createBlog = async (body, userId) => {
 export const getBlogs = async (query, userId) => {
   logger.log(level.info, `>> get blog repo`);
   const docLength = await blogModel.count({ user_id: userId });
-  const blogs = await blogModel.get({ user_id: userId }, null, {
-    sort: { created_at: 'desc' },
-    page: +query.page,
-    limit: +query.limit
-  });
+  const blogs = await blogModel.aggregate(
+    [
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user_id',
+          foreignField: 'user_id',
+          as: 'user'
+        }
+      }
+    ],
+    null,
+    {
+      sort: { created_at: 'desc' },
+      page: +query.page,
+      limit: +query.limit
+    }
+  );
+  // const blogs = await blogModel.get({ user_id: userId }, null, {
+  //   sort: { created_at: 'desc' },
+  //   page: +query.page,
+  //   limit: +query.limit
+  // });
   let data = {};
   if (!blogs || blogs.length <= 0) {
     data = {
@@ -137,5 +156,42 @@ export const deletedCheckedBlogs = async (userId, body) => {
   data = {
     message: 'blog deleted!!'
   };
+  return data;
+};
+
+// get blog
+export const getBlogById = async (id) => {
+  logger.log(level.info, `>> get blog repo`);
+  console.log('++++');
+  const blog = await blogModel.aggregate([
+    {
+      $match: {
+        blog_id: id
+      }
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'user_id',
+        foreignField: 'user_id',
+        as: 'user'
+      }
+    }
+  ]);
+  // const blogs = await blogModel.get({ user_id: userId }, null, {
+  //   sort: { created_at: 'desc' },
+  //   page: +query.page,
+  //   limit: +query.limit
+  // });
+  let data = {};
+  if (!blog || blog.length <= 0) {
+    data = {
+      error: true,
+      message: 'No blogs Found!!'
+    };
+    return data;
+  }
+
+  data = { error: false, message: 'succ_02', data: blog };
   return data;
 };

@@ -10,12 +10,20 @@ function Profile() {
           justifyContent: 'left',
           marginLeft: '2rem'
         }}>
-        <Link to=""> My_Blogs </Link>{' '}
-        <Link to="following" style={{ marginLeft: '2rem' }}>
+        <Link to="edit"> Edit Profile </Link>{' '}
+        <Link to="" style={{ marginLeft: '2rem' }}>
           {' '}
-          Followings{' '}
+          My_Blogs{' '}
+        </Link>{' '}
+        <Link to="following" style={{ marginLeft: '2rem' }}>
+          Followings
+        </Link>
+        <Link to="create" style={{ marginLeft: '2rem' }}>
+          {' '}
+          Create{' '}
         </Link>{' '}
       </nav>{' '}
+      <hr />
       <Outlet />
     </div>
   );

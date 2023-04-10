@@ -9,6 +9,9 @@ import {
 } from '../../utils/utility';
 import { validationResult } from 'express-validator';
 import * as blogRepo from '../../repositories/blogs/blogs';
+// const path = require('path');
+
+// const rootDir = path.dirname(process.mainModule.filename);
 
 // Create Blog
 export const createBlog = async (req, resp) => {
@@ -18,8 +21,22 @@ export const createBlog = async (req, resp) => {
     if (!errors.isEmpty()) {
       return badRequestError(resp, errors);
     }
+    // if (!req.files || Object.keys(req.files).length === 0) {
+    //   return resp.status(400).send('No files were uploaded.');
+    // }
+    const file = req.files.image;
+
+    file.mv(
+      `/home/crawlapps/Downloads/Practice/Mern stack/blog_app/src/public/blogs/${file.name}`,
+      (err) => {
+        if (err) {
+          throw new Error(err);
+        }
+      }
+    );
+    const imageUrl = `http://localhost:3000/static/${file.name}`;
     const { user_id } = req.currentUser;
-    const createdBlog = await blogRepo.createBlog(req.body, user_id);
+    const createdBlog = await blogRepo.createBlog(req.body, imageUrl, user_id);
     successResponseCreated(resp, createdBlog);
   } catch (error) {
     logger.log(level.error, `Create Blog error=${error}`);
@@ -38,6 +55,20 @@ export const getBlogs = async (req, resp) => {
     serverError(resp);
   }
 };
+// Get Blog
+export const getBlogById = async (req, resp) => {
+  logger.log(level.debug, '>>Get Blogs');
+  try {
+    // const { user_id } = req.currentUser;
+    console.log(req.params.id);
+    const blogs = await blogRepo.getBlogById(req.params.id);
+    successResponse(resp, blogs);
+  } catch (error) {
+    logger.log(level.error, `Get Blog error=${error}`);
+    serverError(resp);
+  }
+};
+
 // Update Blog
 export const updateBlog = async (req, resp) => {
   logger.log(level.debug, '>>Update Blog');
