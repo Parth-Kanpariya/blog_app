@@ -8,7 +8,7 @@ import ApiRoutes from './routes/index';
 import fs from 'fs';
 
 const app = express();
-
+console.log(__dirname);
 const PATH = {
   ROOT: '/',
   API: '/api'

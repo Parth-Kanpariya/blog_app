@@ -14,9 +14,9 @@ export const createBlogService = async (body) => {
   }
 };
 
-export const getBlogService = async () => {
+export const getBlogService = async (id) => {
   try {
-    const BlogList = await axios.get('/api/blogs/', {}, config);
+    const BlogList = await axios.get('/api/blogs/', {user_id:localStorage.userId}, config);
     return BlogList;
   } catch (error) {
     return error;

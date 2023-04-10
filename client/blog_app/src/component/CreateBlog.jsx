@@ -6,6 +6,7 @@ import CustomInput, { CustomTextArea } from './CustomInput';
 import { createBlogService } from '../services/blogService';
 import { ToastContainer } from 'react-toastify';
 import { successToast, errorToast } from '../helper/ToastComponent';
+import {  useNavigate } from 'react-router-dom';
 const validationSchema = Yup.object({
   title: Yup.string().required('Required'),
   description: Yup.string().required('Required'),
@@ -13,7 +14,8 @@ const validationSchema = Yup.object({
   image: Yup.mixed().required('Required')
 });
 function CreateBlog() {
-  async function handleSubmit(values, { setSubmitting }) {
+  const navigate = useNavigate()
+  async function handleSubmit(values, {resetForm, setSubmitting, setFieldValue }) {
     console.log('===========');
 
     const formData = new FormData();
@@ -23,33 +25,22 @@ function CreateBlog() {
     formData.append('image', values.image);
 
     console.log(values);
-    // actions.resetForm();
-
+   
+     resetForm()
+     
     try {
       const resp = await createBlogService(formData);
       if (resp.status === 201) {
         successToast('Blog published Successfully');
+        navigate('/profile')
         return;
       }
       errorToast('Blog is not created!');
     } catch (error) {
       errorToast('Error while creating blog');
     }
-    // setSubmitting(false);
-    // axios
-    //   .post('/api/posts', formData, {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     }
-    //   })
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     setSubmitting(false);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //     setSubmitting(false);
-    //   });
+  
+   
   }
   return (
     <div>

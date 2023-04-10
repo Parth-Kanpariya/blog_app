@@ -39,6 +39,11 @@ export const getBlogs = async (query, userId) => {
   const docLength = await blogModel.count({ user_id: userId });
   const blogs = await blogModel.aggregate(
     [
+      // {
+      //   $match: {
+      //     user_id: userId
+      //   }
+      // },
       {
         $lookup: {
           from: 'users',
@@ -46,11 +51,15 @@ export const getBlogs = async (query, userId) => {
           foreignField: 'user_id',
           as: 'user'
         }
+      },
+      {
+        $sort: {
+          created_at: -1
+        }
       }
     ],
     null,
     {
-      sort: { created_at: 'desc' },
       page: +query.page,
       limit: +query.limit
     }

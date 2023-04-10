@@ -25,8 +25,8 @@ function Header() {
     }
     const fetchUser = async () => {
       const user = await getUser();
-      if (user.status === 200) {
-        setUserData(user.data.data.data);
+      if (user) {
+        setUserData(user.data.data);
       }
     };
     fetchUser();
@@ -46,7 +46,7 @@ function Header() {
   const handleLogoClick = () => {
     navigate('/');
   };
-  console.log(user);
+  console.log(",", "===============================");
 
   return (
     <Row

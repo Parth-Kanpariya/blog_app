@@ -23,7 +23,7 @@ function EditProfile() {
 
     try {
       const resp = await updateUser(formData);
-      if (resp.status === 201) {
+      if (resp) {
         successToast('User updated Successfully');
         return;
       }
@@ -35,7 +35,7 @@ function EditProfile() {
 
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}>Edit Profile</h1>
+      <h1 style={{ textAlign: 'center' }}> Edit Profile </h1>
       <Formik
         initialValues={{
           firstname: firstname,
@@ -54,7 +54,7 @@ function EditProfile() {
               errors={errors}
               touched={touched}
             />
-            <label htmlFor="image">Image:</label>
+            <label htmlFor="image"> Image: </label>
             <input
               id="profileImage"
               name="profile_image"

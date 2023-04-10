@@ -27,7 +27,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/blog/:id" element={<Blog />} />
           <Route path="/profile" element={<Profile />}>
-            <Route index element={<BlogList />} />{' '}
+            <Route index element={<BlogList id="myBlogs" />} />{' '}
             <Route path="/profile/following" element={<Following />} />
             <Route path="/profile/create" element={<CreateBlog />} />
             <Route path="/profile/edit" element={<EditProfile />} />

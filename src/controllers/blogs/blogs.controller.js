@@ -9,6 +9,7 @@ import {
 } from '../../utils/utility';
 import { validationResult } from 'express-validator';
 import * as blogRepo from '../../repositories/blogs/blogs';
+import { constants as APP_CONST } from '../../constant/application';
 // const path = require('path');
 
 // const rootDir = path.dirname(process.mainModule.filename);
@@ -26,14 +27,11 @@ export const createBlog = async (req, resp) => {
     // }
     const file = req.files.image;
 
-    file.mv(
-      `/home/crawlapps/Downloads/Practice/Mern stack/blog_app/src/public/blogs/${file.name}`,
-      (err) => {
-        if (err) {
-          throw new Error(err);
-        }
+    file.mv(`${APP_CONST.BLOG_PATH}/${file.name}`, (err) => {
+      if (err) {
+        throw new Error(err);
       }
-    );
+    });
     const imageUrl = `http://localhost:3000/static/${file.name}`;
     const { user_id } = req.currentUser;
     const createdBlog = await blogRepo.createBlog(req.body, imageUrl, user_id);

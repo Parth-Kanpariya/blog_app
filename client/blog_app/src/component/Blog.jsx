@@ -17,12 +17,12 @@ function Blog() {
     };
     fetchBlogList();
   }, [id]);
-
+  console.log(user,"##################")
   return (
     <div style={{ margin: '1rem' }}>
       <Row className="user-profile">
         <Col>
-          <RoundImage className="profile-photo" />
+          <RoundImage img={user.profile_image} className="profile-photo" />
         </Col>{' '}
         <Col>
           <h2 className="username"> {user.firstname} </h2> <p className="user-bio"> My bio </p>{' '}
