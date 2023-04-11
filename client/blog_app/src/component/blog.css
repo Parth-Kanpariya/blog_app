@@ -12,17 +12,25 @@
 }
 
 .username {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-bottom: 0.2rem;
     margin-left: 0.5rem;
 }
 
 .user-bio {
     font-size: 1rem;
-    line-height: 0.3;
+    line-height: 0.2;
 }
 
 .blog-description {
     text-align: justify;
     margin: 2rem;
+}
+
+.changeBlogConfig{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
 }

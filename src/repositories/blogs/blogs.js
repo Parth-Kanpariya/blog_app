@@ -83,12 +83,13 @@ export const getBlogs = async (query, userId) => {
 };
 // update blog
 
-export const updateBlog = async (body, userId, blogId) => {
+export const updateBlog = async (body, userId, blogId, imageUrl) => {
   logger.log(level.info, `>> update blog repo`);
   const blogs = await blogModel.get({
     blog_id: blogId,
     user_id: userId
   });
+
   let data = {};
   if (!blogs || blogs.length <= 0) {
     data = {
@@ -96,6 +97,11 @@ export const updateBlog = async (body, userId, blogId) => {
       message: 'No blog Found!!'
     };
     return data;
+  }
+  if (imageUrl !== '') {
+    body.image = imageUrl;
+  } else {
+    body.image = blogs[0].image;
   }
   const updatedblog = await blogModel.update(
     {

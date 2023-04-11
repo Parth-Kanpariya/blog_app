@@ -16,7 +16,16 @@ export const createBlogService = async (body) => {
 
 export const getBlogService = async (id) => {
   try {
-    const BlogList = await axios.get('/api/blogs/', {user_id:localStorage.userId}, config);
+    const BlogList = await axios.get(
+      '/api/blogs/',
+      {
+        user_id: localStorage.userId
+        // params: {
+        //   title: query
+        // }
+      },
+      config
+    );
     return BlogList;
   } catch (error) {
     return error;
@@ -27,6 +36,26 @@ export const getBlogByIdService = async (id) => {
   try {
     const BlogData = await axios.get(`/api/blogs/${id}`, {}, config);
     return BlogData;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const updateBlogService = async (id, body) => {
+  try {
+    const response = await axios.put(`http://localhost:3000/api/blogs/${id}`, body);
+    if (response.status === 200) {
+      return response;
+    }
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteBlogService = async (id) => {
+  try {
+    const resp = await axios.delete(`http://localhost:3000/api/blogs/${id}`, null, config);
+    return resp;
   } catch (error) {
     return error;
   }

@@ -8,11 +8,15 @@ import { RegisterUser, getUser, updateUser } from '../services/authService';
 import { ToastContainer } from 'react-toastify';
 import { successToast, errorToast } from '../helper/ToastComponent';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
 
 function EditProfile() {
   const navigate = useNavigate();
-  const { firstname, email, image } = JSON.parse(localStorage.user);
+  const userPayload = useSelector((state) => state.user);
 
+  // const { firstname } = JSON.parse(localStorage.user);
+  // setFirstname(userPayload.user?.firstname);
+  console.log(userPayload.user?.firstname);
   const onSubmit = async (values, actions) => {
     const formData = new FormData();
     formData.append('firstname', values.firstname);
@@ -24,7 +28,10 @@ function EditProfile() {
     try {
       const resp = await updateUser(formData);
       if (resp) {
+        console.log(resp.data.data, 'RRRRRREEEEEEEEDDDDDDUUUUUUUXXXXXXX');
+
         successToast('User updated Successfully');
+        window.location.reload();
         return;
       }
       errorToast('User is not updated!');
@@ -38,8 +45,8 @@ function EditProfile() {
       <h1 style={{ textAlign: 'center' }}> Edit Profile </h1>
       <Formik
         initialValues={{
-          firstname: firstname,
-          profile_image: image
+          firstname: userPayload.user?.firstname,
+          profile_image: null
         }}
         onSubmit={onSubmit}
         // validationSchema={registerSchema}

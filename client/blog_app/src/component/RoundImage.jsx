@@ -1,11 +1,10 @@
 import React from 'react';
 import './roundImage.css'; // import your stylesheet
 
-function RoundImage({ img }) {
-  console.log(img);
+function RoundImage(props) {
   return (
-    <div className="container">
-      <img className="round-image" src={img} alt="round image" />
+    <div style={props.style} className="container">
+      <img className="round-image" src={props.img} alt="round image" />
     </div>
   );
 }

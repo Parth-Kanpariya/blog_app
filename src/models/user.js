@@ -62,7 +62,10 @@ const schema = {
     set: encryptText,
     get: decryptText
   },
-  profile_image: String,
+  profile_image: {
+    type: String,
+    default: ''
+  },
   password_reset_token: String,
   password_reset_otp: String,
   oauth_provider: {

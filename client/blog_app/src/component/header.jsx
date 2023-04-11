@@ -6,30 +6,30 @@ import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap
 import './header.css';
 import { useNavigate } from 'react-router-dom';
 import { getUser } from '../services/authService';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from '../redux/actions';
 
-function Header() {
+function Header(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [login, setLogin] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [searchInput, setSearchInput] = useState('');
+
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user);
+
   const toggle = () => setIsOpen(!isOpen);
   const handleHideDropdown = () => setIsOpen(false);
-  const hidden = 'hidden';
   const token = localStorage.token;
   const userId = localStorage.userId;
-  const user = localStorage.user;
 
   useEffect(() => {
-    if (token && userId && user) {
+    if (token && userId) {
       setLogin(true);
     }
-    const fetchUser = async () => {
-      const user = await getUser();
-      if (user) {
-        setUserData(user.data.data);
-      }
-    };
-    fetchUser();
+
+    dispatch(fetchUser());
   }, [token]);
 
   const handleLogOutClick = () => {
@@ -44,55 +44,92 @@ function Header() {
   };
 
   const handleLogoClick = () => {
+    props.onSearch('');
     navigate('/');
   };
-  console.log(",", "===============================");
+  const handleInputSubmit = (e) => {
+    if (e.keyCode === 13) {
+      props.onSearch(searchInput);
+      navigate('/');
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setSearchInput(e.target.value);
+  };
 
   return (
-    <Row
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginLeft: '2rem',
-        marginRight: '2rem'
-      }}>
-      <Col>
-        <img
-          src={logo}
-          className="App-logo"
-          style={{ marginTop: '1rem', cursor: 'pointer' }}
-          alt="logo"
-          onClick={handleLogoClick}
-        />{' '}
-      </Col>{' '}
-      {login && (
-        <Dropdown isOpen={isOpen} toggle={toggle} className="profile-dropdown">
-          <DropdownToggle
-            tag="div"
-            onClick={toggle}
-            data-toggle="dropdown"
-            aria-expanded={isOpen}
-            className="profile-toggle">
-            <RoundImage img={user.profile_image} />
-            <h3 className="profile-username">{JSON.parse(localStorage.user)?.email}</h3>
-          </DropdownToggle>{' '}
-          {isOpen === true && (
-            <DropdownMenu end className="profile-menu">
-              <DropdownItem className="dropdown-item" onClick={handleProfileClick}>
-                {' '}
-                Profile{' '}
-              </DropdownItem>{' '}
-              {/* <DropdownItem> Settings </DropdownItem>{' '} */}{' '}
-              <DropdownItem className="dropdown-item" divider onClick={handleProfileClick} />{' '}
-              <DropdownItem className="dropdown-item" onClick={handleLogOutClick}>
-                {' '}
-                Sign out{' '}
-              </DropdownItem>{' '}
-            </DropdownMenu>
-          )}{' '}
-        </Dropdown>
-      )}{' '}
-    </Row>
+    <div>
+      <Row
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignContent: 'center',
+          alignItems: 'center',
+          marginLeft: '2rem',
+          marginRight: '2rem'
+        }}>
+        <Col>
+          <Row
+            style={{
+              display: 'flex',
+              alignContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer'
+            }}
+            onClick={handleLogoClick}>
+            <img
+              src={logo}
+              className="App-logo"
+              style={{ marginTop: '0rem', height: '90px', width: '100px' }}
+              alt="logo"
+            />{' '}
+            <Col>
+              <h1>Excellent</h1>
+            </Col>
+          </Row>
+        </Col>
+        <Col>
+          <input
+            type="text"
+            placeholder="Search Blogs"
+            value={searchInput}
+            onKeyDown={handleInputSubmit}
+            onChange={handleInputChange}
+          />{' '}
+        </Col>{' '}
+        {login && (
+          <Dropdown isOpen={isOpen} toggle={toggle} className="profile-dropdown">
+            <DropdownToggle
+              tag="div"
+              onClick={toggle}
+              data-toggle="dropdown"
+              aria-expanded={isOpen}
+              className="profile-toggle">
+              <RoundImage img={userData.user?.profile_image} />
+              <h3 style={{ marginLeft: '3px' }} className="profile-username">
+                {userData.user?.firstname}
+              </h3>
+            </DropdownToggle>{' '}
+            {isOpen === true && (
+              <DropdownMenu end className="profile-menu">
+                <DropdownItem className="dropdown-item" onClick={handleProfileClick}>
+                  {' '}
+                  Profile{' '}
+                </DropdownItem>{' '}
+                {/* <DropdownItem> Settings </DropdownItem>{' '} */}{' '}
+                <DropdownItem className="dropdown-item" divider onClick={handleProfileClick} />{' '}
+                <DropdownItem className="dropdown-item" onClick={handleLogOutClick}>
+                  {' '}
+                  Sign out{' '}
+                </DropdownItem>{' '}
+              </DropdownMenu>
+            )}{' '}
+          </Dropdown>
+        )}{' '}
+      </Row>
+      <hr style={{ color: '#F2F3F5' }} />
+    </div>
   );
 }
 //    /* (

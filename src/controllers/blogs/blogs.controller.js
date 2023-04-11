@@ -71,8 +71,19 @@ export const getBlogById = async (req, resp) => {
 export const updateBlog = async (req, resp) => {
   logger.log(level.debug, '>>Update Blog');
   try {
+    let imageUrl="";
+    if (req.files) {
+      const file = req.files.image;
+
+      file.mv(`${APP_CONST.BLOG_PATH}/${file.name}`, (err) => {
+        if (err) {
+          throw new Error(err);
+        }
+      });
+     imageUrl = `http://localhost:3000/static/${file.name}`;
+    }
     const { user_id } = req.currentUser;
-    const updatedBlog = await blogRepo.updateBlog(req.body, user_id, req.params.id);
+    const updatedBlog = await blogRepo.updateBlog(req.body, user_id, req.params.id, imageUrl);
     successResponse(resp, updatedBlog);
   } catch (error) {
     logger.log(level.error, `Update Blog error=${error}`);
