@@ -18,7 +18,8 @@ export const createBlog = async (body, imageUrl, userId) => {
   //   };
   //   return data;
   // }
-
+  const tagsList = body.tags.split(' ');
+  body.tags = tagsList;
   const newblog = await blogModel.add({
     ...body,
     description: body.description.toLowerCase(),
@@ -84,7 +85,7 @@ export const getBlogs = async (query, userId) => {
 };
 // update blog
 
-export const updateBlog = async (body, userId, blogId) => {
+export const updateBlog = async (body, userId, blogId, imageUrl) => {
   logger.log(level.info, `>> update blog repo`);
   const blogs = await blogModel.get({
     blog_id: blogId,
@@ -97,6 +98,15 @@ export const updateBlog = async (body, userId, blogId) => {
       message: 'No blog Found!!'
     };
     return data;
+  }
+
+  const tagsList = body.tags.split(' ');
+  body.tags = tagsList;
+  console.log(imageUrl);
+  if (imageUrl === '') {
+    body.image = blogs.image;
+  } else {
+    body.image = imageUrl;
   }
   const updatedblog = await blogModel.update(
     {

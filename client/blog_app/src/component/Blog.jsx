@@ -9,6 +9,7 @@ import { successToast, errorToast } from '../helper/ToastComponent';
 import CommentList from './comments/CommentList';
 import CommentInput from './comments/CommentInput';
 import { createLikeService, getLikeService } from '../services/likesService';
+import { createFollowingService, getFollowingService } from '../services/followingService';
 
 function Blog() {
   const [BlogData, setBlogData] = useState({});
@@ -16,8 +17,8 @@ function Blog() {
   const [user, setUser] = useState({});
   const [isFollowing, setIsFollowing] = useState(false);
   const [liked, setLiked] = useState(false);
-  const [likedData, setLikedData] = useState({});
   const [noOfLikes, setNoOfLikes]=useState(0)
+ 
   const { id } = useParams();
   const navigate = useNavigate();
   const userId = localStorage.userId;
@@ -29,13 +30,29 @@ function Blog() {
       setUser(BlogApiData?.data?.data?.data[0]?.user[0]);
       setLiked(likesData?.data?.data?.data[0]?.userLiked)
       setNoOfLikes(likesData?.data?.data?.data[0]?.numberOfLikes)
+      const followingData = await getFollowingService(BlogApiData?.data?.data?.data[0]?.user[0].user_id)
+      setIsFollowing(followingData?.data?.data?.data[0].is_following)
 
     };
     fetchBlogList();
   }, [id]);
-  console.log(user, '##################');
-  const handleFollowClick = (e) => {
-    setIsFollowing(!isFollowing);
+  
+  const handleFollowClick =async (e) => {
+   
+    try {
+      const resp = await createFollowingService(user?.user_id);
+      if (resp.status === 201) {
+        successToast('follwing  successfully!');
+        setIsFollowing(!isFollowing);
+        // navigate('/');
+      } else {
+        errorToast(' not follwing!');
+      }
+    } catch (error) {
+      errorToast(' not follwing!');
+    }
+
+   
   };
   const handleUnFollowClick = (e) => {
     setIsFollowing(!isFollowing);
@@ -107,6 +124,7 @@ function Blog() {
 
     return formattedDate;
   };
+  console.log(user, 'user')
   return (
     <div style={{ margin: '1rem' }}>
       <Row className="user-profile">

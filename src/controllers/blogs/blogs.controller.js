@@ -71,7 +71,7 @@ export const getBlogById = async (req, resp) => {
 export const updateBlog = async (req, resp) => {
   logger.log(level.debug, '>>Update Blog');
   try {
-    let imageUrl="";
+    let imageUrl = '';
     if (req.files) {
       const file = req.files.image;
 
@@ -80,8 +80,9 @@ export const updateBlog = async (req, resp) => {
           throw new Error(err);
         }
       });
-     imageUrl = `http://localhost:3000/static/${file.name}`;
+      imageUrl = `http://localhost:3000/static/${file.name}`;
     }
+    console.log(imageUrl);
     const { user_id } = req.currentUser;
     const updatedBlog = await blogRepo.updateBlog(req.body, user_id, req.params.id, imageUrl);
     successResponse(resp, updatedBlog);

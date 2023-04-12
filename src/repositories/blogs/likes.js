@@ -26,11 +26,11 @@ export const getLikes = async (query, userId, blogId) => {
   const docLength = await likeModel.count({ blog_id: blogId });
   const likes = await blogModel.aggregate(
     [
-      // {
-      //   $match: {
-      //     blog_id: blogId
-      //   }
-      // },
+      {
+        $match: {
+          blog_id: blogId
+        }
+      },
       // {
       //   $lookup: {
       //     from: 'likes',
