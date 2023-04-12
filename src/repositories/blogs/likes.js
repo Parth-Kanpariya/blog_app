@@ -48,20 +48,20 @@ export const getLikes = async (query, userId, blogId) => {
       {
         $lookup: {
           from: 'likes',
-          localField: '_id',
-          foreignField: 'postId',
+          localField: 'blog_id',
+          foreignField: 'blog_id',
           as: 'likes'
         }
       },
       {
         $lookup: {
           from: 'likes',
-          let: { postId: '$_id', userId: userId },
+          let: { postId: '$blog_id', userId: userId },
           pipeline: [
             {
               $match: {
                 $expr: {
-                  $and: [{ $eq: ['$postId', '$$postId'] }, { $eq: ['$userId', '$$userId'] }]
+                  $and: [{ $eq: ['$blog_id', '$$postId'] }, { $eq: ['$user_id', '$$userId'] }]
                 }
               }
             }

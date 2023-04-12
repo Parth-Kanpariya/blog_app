@@ -4,7 +4,7 @@ import blogModel from '../../models/blogs';
 
 // create blog
 export const createBlog = async (body, imageUrl, userId) => {
-  logger.log(level.info, `>> Create Blog repo body=${JSON.stringify(body)}`);
+  logger.log(level.info, `>> Create Job repo body=${JSON.stringify(body)}`);
   let data = {};
   // const blogExist = await blogModel.isExist({
   //   ...body,
@@ -18,13 +18,12 @@ export const createBlog = async (body, imageUrl, userId) => {
   //   };
   //   return data;
   // }
-  const tagsList = body.tags.split(' ');
+
   const newblog = await blogModel.add({
     ...body,
     description: body.description.toLowerCase(),
     user_id: userId,
-    image: imageUrl,
-    tags: tagsList
+    image: imageUrl
   });
   data = {
     error: false,
@@ -53,6 +52,7 @@ export const getBlogs = async (query, userId) => {
           as: 'user'
         }
       },
+
       {
         $sort: {
           created_at: -1
@@ -84,13 +84,12 @@ export const getBlogs = async (query, userId) => {
 };
 // update blog
 
-export const updateBlog = async (body, userId, blogId, imageUrl) => {
+export const updateBlog = async (body, userId, blogId) => {
   logger.log(level.info, `>> update blog repo`);
   const blogs = await blogModel.get({
     blog_id: blogId,
     user_id: userId
   });
-
   let data = {};
   if (!blogs || blogs.length <= 0) {
     data = {
@@ -99,13 +98,6 @@ export const updateBlog = async (body, userId, blogId, imageUrl) => {
     };
     return data;
   }
-  if (imageUrl !== '') {
-    body.image = imageUrl;
-  } else {
-    body.image = blogs[0].image;
-  }
-  const tagsList = body.tags.split(' ');
-  body.tags = tagsList;
   const updatedblog = await blogModel.update(
     {
       user_id: userId,

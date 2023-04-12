@@ -17,17 +17,22 @@ function Blog() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likedData, setLikedData] = useState({});
+  const [noOfLikes, setNoOfLikes]=useState(0)
   const { id } = useParams();
   const navigate = useNavigate();
   const userId = localStorage.userId;
   useEffect(() => {
     const fetchBlogList = async () => {
       const BlogApiData = await getBlogByIdService(id);
-      setBlogData(BlogApiData.data.data.data[0]);
-      setUser(BlogApiData.data.data.data[0].user[0]);
+      const likesData = await getLikeService(id)
+      setBlogData(BlogApiData?.data?.data?.data[0]);
+      setUser(BlogApiData?.data?.data?.data[0]?.user[0]);
+      setLiked(likesData?.data?.data?.data[0]?.userLiked)
+      setNoOfLikes(likesData?.data?.data?.data[0]?.numberOfLikes)
+
     };
     fetchBlogList();
-  }, []);
+  }, [id]);
   console.log(user, '##################');
   const handleFollowClick = (e) => {
     setIsFollowing(!isFollowing);
@@ -69,8 +74,10 @@ function Blog() {
       const resp = await createLikeService(body);
       if (resp.status === 201) {
         successToast('like created successfully!');
+        setNoOfLikes(noOfLikes+1)
         setLiked(true);
       } else {
+        console.log(resp, "++++++++")
         errorToast('like not created!');
       }
     } catch (error) {
@@ -102,7 +109,6 @@ function Blog() {
   };
   return (
     <div style={{ margin: '1rem' }}>
-      {console.log(likedData, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')}
       <Row className="user-profile">
         <Col>
           <RoundImage img={user.profile_image} className="profile-photo" />
@@ -176,6 +182,7 @@ function Blog() {
         {/* <Col>
           <ClapIcon onClick={handleClapClick} />
         </Col> */}
+        {console.log(liked, "liked")}
         <Button
           onClick={handleClapClick}
           text="Like"
@@ -187,7 +194,7 @@ function Blog() {
             color: 'white'
           }}
         />
-        <p style={{ marginLeft: '10px', marginRight: '20px' }}> {likedData?.numberOfLikes || 0}</p>
+        <p style={{ marginLeft: '10px', marginRight: '20px' }}> {noOfLikes || 0}</p>
 
         <Button
           onClick={handleCommentButtonClick}
