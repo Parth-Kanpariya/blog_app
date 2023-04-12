@@ -4,7 +4,7 @@ import blogModel from '../../models/blogs';
 
 // create blog
 export const createBlog = async (body, imageUrl, userId) => {
-  logger.log(level.info, `>> Create Job repo body=${JSON.stringify(body)}`);
+  logger.log(level.info, `>> Create Blog repo body=${JSON.stringify(body)}`);
   let data = {};
   // const blogExist = await blogModel.isExist({
   //   ...body,
@@ -18,12 +18,13 @@ export const createBlog = async (body, imageUrl, userId) => {
   //   };
   //   return data;
   // }
-
+  const tagsList = body.tags.split(' ');
   const newblog = await blogModel.add({
     ...body,
     description: body.description.toLowerCase(),
     user_id: userId,
-    image: imageUrl
+    image: imageUrl,
+    tags: tagsList
   });
   data = {
     error: false,
@@ -103,6 +104,8 @@ export const updateBlog = async (body, userId, blogId, imageUrl) => {
   } else {
     body.image = blogs[0].image;
   }
+  const tagsList = body.tags.split(' ');
+  body.tags = tagsList;
   const updatedblog = await blogModel.update(
     {
       user_id: userId,

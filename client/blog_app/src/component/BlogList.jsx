@@ -16,7 +16,11 @@ function BlogList({ id, query }) {
   }, []);
 
   const filteredBlog = Blogs.filter((blog) => {
-    return blog.title.toLowerCase().includes(query?.toLowerCase() || '');
+    return (
+      blog.title.toLowerCase().includes(query?.toLowerCase() || '') ||
+      blog?.tags.find((tag) => tag?.toLowerCase().includes(query?.toLowerCase() || '')) ||
+      blog.category.toLowerCase().includes(query?.toLowerCase() || '')
+    );
   });
   return (
     <div>

@@ -2,27 +2,32 @@ import React, { useState, useEffect } from 'react';
 import RoundImage from './RoundImage';
 import { Row, Col } from 'react-bootstrap';
 import './blog.css';
-import { useParams, useNavigate, Navigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { deleteBlogService, getBlogByIdService } from '../services/blogService';
 import Button from './Button';
 import { successToast, errorToast } from '../helper/ToastComponent';
-import EditBlog from '../pages/EditBlog';
+import CommentList from './comments/CommentList';
+import CommentInput from './comments/CommentInput';
+import { createLikeService, getLikeService } from '../services/likesService';
 
 function Blog() {
   const [BlogData, setBlogData] = useState({});
+  const [commentBox, setCommentBox] = useState(false);
   const [user, setUser] = useState({});
   const [isFollowing, setIsFollowing] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likedData, setLikedData] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
   const userId = localStorage.userId;
   useEffect(() => {
     const fetchBlogList = async () => {
-      const BlogData = await getBlogByIdService(id);
-      setBlogData(BlogData.data.data.data[0]);
-      setUser(BlogData.data.data.data[0].user[0]);
+      const BlogApiData = await getBlogByIdService(id);
+      setBlogData(BlogApiData.data.data.data[0]);
+      setUser(BlogApiData.data.data.data[0].user[0]);
     };
     fetchBlogList();
-  }, [id]);
+  }, []);
   console.log(user, '##################');
   const handleFollowClick = (e) => {
     setIsFollowing(!isFollowing);
@@ -33,6 +38,16 @@ function Blog() {
   const handleUpdateBlogClick = (e) => {
     navigate(`/profile/editblog?q=${BlogData.blog_id}`);
   };
+
+  const handleCommentButtonClick = (e) => {
+    console.log('clicked');
+    setCommentBox(!commentBox);
+  };
+
+  const handleCancleCommentBox = (e) => {
+    setCommentBox(!commentBox);
+  };
+
   const handleDeleteBlogClick = async (e) => {
     try {
       const resp = await deleteBlogService(id);
@@ -44,6 +59,22 @@ function Blog() {
       }
     } catch (error) {
       errorToast('Blog not deleted!');
+    }
+  };
+  const handleClapClick = async (e) => {
+    try {
+      const body = {
+        blog_id: BlogData.blog_id
+      };
+      const resp = await createLikeService(body);
+      if (resp.status === 201) {
+        successToast('like created successfully!');
+        setLiked(true);
+      } else {
+        errorToast('like not created!');
+      }
+    } catch (error) {
+      errorToast('like not created!');
     }
   };
 
@@ -71,6 +102,7 @@ function Blog() {
   };
   return (
     <div style={{ margin: '1rem' }}>
+      {console.log(likedData, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')}
       <Row className="user-profile">
         <Col>
           <RoundImage img={user.profile_image} className="profile-photo" />
@@ -110,10 +142,70 @@ function Blog() {
       <Row className="blog-description">
         <h1 style={{ fontSize: '2.5rem' }}> {capitalizeWords(BlogData.title)} </h1>{' '}
         <div style={{ display: 'flex', justifyContent: 'center', margin: '2rem' }}>
-          <img style={{ width: '300px', height: '400px' }} src={BlogData.image} alt="example.com" />
+          <img
+            style={{ maxWidth: '800px', maxHeight: '500px' }}
+            src={BlogData.image}
+            alt="example.com"
+          />
         </div>{' '}
         <p style={{ fontSize: '1.5rem' }}> {BlogData.description} </p>{' '}
       </Row>{' '}
+      <div style={{ display: 'flex', marginLeft: '2rem' }}>
+        {BlogData.tags?.map((tag, i) => (
+          <p
+            key={i}
+            style={{
+              backgroundColor: '#808080',
+              color: 'white',
+              padding: '0.8rem',
+              marginLeft: '5px',
+              borderRadius: '15%'
+            }}>
+            {tag}
+          </p>
+        ))}
+      </div>
+      <Row
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'left',
+          margin: '2rem',
+          marginBottom: '3.5rem'
+        }}>
+        {/* <Col>
+          <ClapIcon onClick={handleClapClick} />
+        </Col> */}
+        <Button
+          onClick={handleClapClick}
+          text="Like"
+          style={{
+            width: '100px',
+            height: '40px',
+            padding: '4px',
+            backgroundColor: liked === true ? '#8B0000' : '#FFCCCB',
+            color: 'white'
+          }}
+        />
+        <p style={{ marginLeft: '10px', marginRight: '20px' }}> {likedData?.numberOfLikes || 0}</p>
+
+        <Button
+          onClick={handleCommentButtonClick}
+          text="Comment"
+          style={{
+            width: '100px',
+            height: '40px',
+            padding: '4px',
+            backgroundColor: 'black',
+            color: 'white',
+            marginLeft: '10px'
+          }}
+        />
+        {/* <Col style={{ marginLeft: '3rem' }}>
+          <CommentIcon onClick={handleCommentButtonClick} />
+        </Col> */}
+      </Row>
+      <CommentList blogId={BlogData.blog_id} />
       {user.user_id === userId ? (
         <Row className="changeBlogConfig">
           <Col>
@@ -143,6 +235,11 @@ function Blog() {
             />
           </Col>
         </Row>
+      ) : (
+        ''
+      )}
+      {commentBox === true ? (
+        <CommentInput cancleCommentBox={handleCancleCommentBox} blogId={BlogData.blog_id} />
       ) : (
         ''
       )}

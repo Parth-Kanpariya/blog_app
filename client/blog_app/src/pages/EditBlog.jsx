@@ -36,7 +36,7 @@ function EditBlog() {
     formData.append('description', values.description);
     formData.append('category', values.category);
     formData.append('image', values.image);
-
+    formData.append('tags', values.tags);
     console.log(values);
 
     resetForm();
@@ -63,7 +63,8 @@ function EditBlog() {
           title: blogData.title,
           description: blogData.description,
           category: blogData.category,
-          image: null
+          image: null,
+          tags: blogData.tags.toString().split(',').join(' ')
         }}
         onSubmit={handleSubmit}
         // validationSchema={validationSchema}
@@ -81,6 +82,7 @@ function EditBlog() {
               <option value="">Select a category</option>
               <option value="technology">Technology</option>
               <option value="health">Health</option>
+              <option value="Organic Farming">Organic Farming</option>
               <option value="lifestyle">Lifestyle</option>
               <option value="productivity">Productivity</option>
               <option value="networking">Networking</option>
@@ -99,6 +101,8 @@ function EditBlog() {
                 setFieldValue('image', event.currentTarget.files[0]);
               }}
             />
+
+            <Field type="text" label="tags" name="tags" id="tags" component={CustomInput} />
 
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Publishing...' : 'Publish'}

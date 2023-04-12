@@ -42,7 +42,7 @@ function Profile() {
         </Link>
         <Link className="links" to="create" onClick={handleClick} style={{ marginLeft: '2rem' }}>
           {' '}
-          Create{' '}
+          Create Blog{' '}
         </Link>{' '}
       </nav>{' '}
       <hr style={{ width: '29rem', margin: 0, marginLeft: '2rem', marginTop: '1rem' }} />

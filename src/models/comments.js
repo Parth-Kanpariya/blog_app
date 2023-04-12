@@ -8,6 +8,9 @@ const schema = {
     default: uuidv4,
     index: true
   },
+  blog_id: {
+    type: String
+  },
   user_id: {
     type: String,
     required: [true, 'User should be LoggedIn!!']
