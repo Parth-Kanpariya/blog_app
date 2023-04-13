@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { logger, level } from '../../config/logger';
 import blogModel from '../../models/blogs';
+import { constants as APP_CONST } from '../../constant/application';
 
 // create blog
-export const createBlog = async (body, imageUrl, userId) => {
+export const createBlog = async (body, req, userId) => {
   logger.log(level.info, `>> Create Job repo body=${JSON.stringify(body)}`);
   let data = {};
   // const blogExist = await blogModel.isExist({
@@ -18,6 +19,14 @@ export const createBlog = async (body, imageUrl, userId) => {
   //   };
   //   return data;
   // }
+  const file = req.files.image;
+
+  file.mv(`${APP_CONST.BLOG_PATH}/${file.name}`, (err) => {
+    if (err) {
+      throw new Error(err);
+    }
+  });
+  const imageUrl = `http://localhost:3000/static/${file.name}`;
   const tagsList = body.tags.split(' ');
   body.tags = tagsList;
   const newblog = await blogModel.add({
@@ -40,11 +49,6 @@ export const getBlogs = async (query, userId) => {
   const docLength = await blogModel.count({ user_id: userId });
   const blogs = await blogModel.aggregate(
     [
-      // {
-      //   $match: {
-      //     user_id: userId
-      //   }
-      // },
       {
         $lookup: {
           from: 'users',
@@ -66,11 +70,6 @@ export const getBlogs = async (query, userId) => {
       limit: +query.limit
     }
   );
-  // const blogs = await blogModel.get({ user_id: userId }, null, {
-  //   sort: { created_at: 'desc' },
-  //   page: +query.page,
-  //   limit: +query.limit
-  // });
   let data = {};
   if (!blogs || blogs.length <= 0) {
     data = {
@@ -85,7 +84,7 @@ export const getBlogs = async (query, userId) => {
 };
 // update blog
 
-export const updateBlog = async (body, userId, blogId, imageUrl) => {
+export const updateBlog = async (body, userId, blogId,req) => {
   logger.log(level.info, `>> update blog repo`);
   const blogs = await blogModel.get({
     blog_id: blogId,
@@ -98,6 +97,17 @@ export const updateBlog = async (body, userId, blogId, imageUrl) => {
       message: 'No blog Found!!'
     };
     return data;
+  }
+  let imageUrl = '';
+  if (req.files) {
+    const file = req.files.image;
+
+    file.mv(`${APP_CONST.BLOG_PATH}/${file.name}`, (err) => {
+      if (err) {
+        throw new Error(err);
+      }
+    });
+    imageUrl = `http://localhost:3000/static/${file.name}`;
   }
 
   const tagsList = body.tags.split(' ');

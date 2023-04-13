@@ -3,12 +3,11 @@ import { CustomSearchInput } from '../CustomInput';
 import Button from '../Button';
 import { createCommentService } from '../../services/commentService';
 import { successToast, errorToast } from '../../helper/ToastComponent';
-import { useNavigate } from 'react-router';
 import { ToastContainer } from 'react-bootstrap';
 
 function CommentInput(props) {
-  const navigate = useNavigate();
   const [comment, setComment] = useState('');
+
   const handleCommentSubmit = async (e) => {
     if (comment === '') return;
     try {
@@ -19,8 +18,9 @@ function CommentInput(props) {
       const resp = await createCommentService(body);
       if (resp.status === 201) {
         successToast('Comment Added');
-        // navigate('/');
+
         props.cancleCommentBox();
+        window.location.reload();
       } else {
         errorToast('Comment not deleted!');
       }

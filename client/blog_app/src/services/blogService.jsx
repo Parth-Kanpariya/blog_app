@@ -20,9 +20,6 @@ export const getBlogService = async (id) => {
       '/api/blogs/',
       {
         user_id: localStorage.userId
-        // params: {
-        //   title: query
-        // }
       },
       config
     );
@@ -42,6 +39,7 @@ export const getBlogByIdService = async (id) => {
 };
 
 export const updateBlogService = async (id, body) => {
+  console.log(body);
   try {
     const response = await axios.put(`http://localhost:3000/api/blogs/${id}`, body);
     if (response.status === 200) {

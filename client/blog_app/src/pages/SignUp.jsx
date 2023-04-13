@@ -12,14 +12,13 @@ import 'react-toastify/dist/ReactToastify.css';
 function Register() {
   const navigate = useNavigate();
   const onSubmit = async (values, actions) => {
-    console.log(values);
     const response = await RegisterUser(values);
     if (response === null) {
       errorToast('User alredy exist with same Email');
     } else {
       successToast('User registered successfully!');
       actions.resetForm();
-      navigate('/login');
+      navigate('/verifyUser');
     }
   };
   if (localStorage.token) {

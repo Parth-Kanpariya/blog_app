@@ -14,7 +14,13 @@ function CommentList({ blogId }) {
 
   return (
     <div style={{ marginLeft: '2rem' }}>
-      <h2 style={{ textAlign: 'justify' }}>Comments</h2>
+      <h2
+        style={{
+          textAlign: 'justify',
+          fontFamily: "sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        }}>
+        Comments
+      </h2>
       <div style={{ marginBottom: '5rem' }}>
         {commentList?.length === 0
           ? 'No Comments!!'
@@ -22,7 +28,6 @@ function CommentList({ blogId }) {
               <Comment key={comment.comment_id} comment={comment} user={comment.user[0]} />
             ))}
       </div>
-      {console.log(commentList)}
     </div>
   );
 }

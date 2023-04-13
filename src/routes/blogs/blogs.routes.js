@@ -6,19 +6,6 @@ import { validate } from '../../validator/blogs.validator';
 import { constants as VALIDATOR } from '../../constant/validator/blogs';
 import * as blogsController from '../../controllers/blogs/blogs.controller';
 const routes = new Router({ mergeParams: true });
-// fileFilter: (req, file, cb) => {
-//   if (
-//     file.mimetype == 'image/png' ||
-//     file.mimetype == 'image/jpg' ||
-//     file.mimetype == 'image/jpeg'
-//   ) {
-//     console.log('++++++++++++');
-//     cb(null, true);
-//   } else {
-//     cb(null, false);
-//     return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-//   }
-// }
 
 const PATH = {
   CREATE_BLOG: '/',
@@ -40,24 +27,24 @@ routes.post(PATH.CREATE_BLOG, validate(VALIDATOR.CREATE_BLOG), blogsController.c
  * @desc Get all Blog of Authenticated user API
  * @access PRIVATE
  */
-routes.get(PATH.GET_BLOGS, blogsController.getBlogs);
+routes.get(PATH.GET_BLOGS, validate(VALIDATOR.GET_BLOGS), blogsController.getBlogs);
 /**
  * @api {GET} /api/blogs/:id
  * @desc GET Blog API
  * @access PRIVATE
  */
-routes.get(PATH.GET_BLOG, blogsController.getBlogById);
+routes.get(PATH.GET_BLOG, validate(VALIDATOR.GET_BLOG), blogsController.getBlogById);
 /**
  * @api {PUT} /api/blogs/:id
  * @desc Update Blog API
  * @access PRIVATE
  */
-routes.put(PATH.UPDATE_BLOG, blogsController.updateBlog);
+routes.put(PATH.UPDATE_BLOG, validate(VALIDATOR.UPDATE_BLOG), blogsController.updateBlog);
 /**
  * @api {DELETE} /api/blogs/:id
  * @desc Delete Blog API
  * @access PRIVATE
  */
-routes.delete(PATH.DELETE_BLOG, blogsController.deleteBlog);
+routes.delete(PATH.DELETE_BLOG, validate(VALIDATOR.DELETE_BLOG), blogsController.deleteBlog);
 
 export default routes;

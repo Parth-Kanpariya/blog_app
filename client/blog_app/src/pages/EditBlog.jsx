@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Button } from 'reactstrap';
 import { Form, Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import CustomInput, { CustomTextArea } from '../component/CustomInput';
-import { createBlogService, getBlogByIdService, updateBlogService } from '../services/blogService';
+import { getBlogByIdService, updateBlogService } from '../services/blogService';
 import { ToastContainer } from 'react-toastify';
 import { successToast, errorToast } from '../helper/ToastComponent';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -11,7 +12,8 @@ const validationSchema = Yup.object({
   title: Yup.string().required('Required'),
   description: Yup.string().required('Required'),
   category: Yup.string().required('Required'),
-  image: Yup.mixed().required('Required')
+  image: Yup.mixed().required('Required'),
+  tags: Yup.string().required('Please Enter tags')
 });
 function EditBlog() {
   const navigate = useNavigate();
@@ -23,14 +25,11 @@ function EditBlog() {
     const fetchBlogList = async () => {
       const BlogData = await getBlogByIdService(blogID);
       setBlogData(BlogData.data.data.data[0]);
-      //   setUser(BlogData.data.data.data[0].user[0]);
     };
     fetchBlogList();
   }, []);
 
   async function handleSubmit(values, { resetForm, setSubmitting, setFieldValue }) {
-    console.log('===========');
-
     const formData = new FormData();
     formData.append('title', values.title);
     formData.append('description', values.description);
@@ -67,8 +66,7 @@ function EditBlog() {
           tags: blogData.tags.toString().split(',').join(' ')
         }}
         onSubmit={handleSubmit}
-        // validationSchema={validationSchema}
-      >
+        >
         {({ isSubmitting, setFieldValue }) => (
           <Form>
             <label htmlFor="title">Title:</label>
@@ -105,7 +103,7 @@ function EditBlog() {
             <Field type="text" label="tags" name="tags" id="tags" component={CustomInput} />
 
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Publishing...' : 'Publish'}
+              {isSubmitting ? 'Updating...' : 'Update'}
             </Button>
           </Form>
         )}

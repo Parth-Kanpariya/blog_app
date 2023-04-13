@@ -9,32 +9,18 @@ import {
 } from '../../utils/utility';
 import { validationResult } from 'express-validator';
 import * as blogRepo from '../../repositories/blogs/blogs';
-import { constants as APP_CONST } from '../../constant/application';
-// const path = require('path');
 
-// const rootDir = path.dirname(process.mainModule.filename);
-
-// Create Blog
 export const createBlog = async (req, resp) => {
   logger.log(level.debug, '>>Create Blog');
   const errors = validationResult(req);
   try {
     if (!errors.isEmpty()) {
+      console.log(errors);
       return badRequestError(resp, errors);
     }
-    // if (!req.files || Object.keys(req.files).length === 0) {
-    //   return resp.status(400).send('No files were uploaded.');
-    // }
-    const file = req.files.image;
 
-    file.mv(`${APP_CONST.BLOG_PATH}/${file.name}`, (err) => {
-      if (err) {
-        throw new Error(err);
-      }
-    });
-    const imageUrl = `http://localhost:3000/static/${file.name}`;
     const { user_id } = req.currentUser;
-    const createdBlog = await blogRepo.createBlog(req.body, imageUrl, user_id);
+    const createdBlog = await blogRepo.createBlog(req.body, req, user_id);
     successResponseCreated(resp, createdBlog);
   } catch (error) {
     logger.log(level.error, `Create Blog error=${error}`);
@@ -57,7 +43,6 @@ export const getBlogs = async (req, resp) => {
 export const getBlogById = async (req, resp) => {
   logger.log(level.debug, '>>Get Blogs');
   try {
-    // const { user_id } = req.currentUser;
     console.log(req.params.id);
     const blogs = await blogRepo.getBlogById(req.params.id);
     successResponse(resp, blogs);
@@ -71,20 +56,8 @@ export const getBlogById = async (req, resp) => {
 export const updateBlog = async (req, resp) => {
   logger.log(level.debug, '>>Update Blog');
   try {
-    let imageUrl = '';
-    if (req.files) {
-      const file = req.files.image;
-
-      file.mv(`${APP_CONST.BLOG_PATH}/${file.name}`, (err) => {
-        if (err) {
-          throw new Error(err);
-        }
-      });
-      imageUrl = `http://localhost:3000/static/${file.name}`;
-    }
-    console.log(imageUrl);
     const { user_id } = req.currentUser;
-    const updatedBlog = await blogRepo.updateBlog(req.body, user_id, req.params.id, imageUrl);
+    const updatedBlog = await blogRepo.updateBlog(req.body, user_id, req.params.id, req);
     successResponse(resp, updatedBlog);
   } catch (error) {
     logger.log(level.error, `Update Blog error=${error}`);
@@ -108,7 +81,6 @@ export const deleteCheckedBlogs = async (req, resp) => {
   logger.log(level.debug, '>>Delete Blog');
   try {
     const { user_id } = req.currentUser;
-    // console.log(req.body);
     const deletedCheckedBlogs = await blogRepo.deletedCheckedBlogs(user_id, req.body);
     successResponse(resp, deletedCheckedBlogs);
   } catch (error) {

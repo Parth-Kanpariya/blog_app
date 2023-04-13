@@ -9,7 +9,7 @@ import {
 } from '../../utils/utility';
 import { validationResult } from 'express-validator';
 import * as commentsRepo from '../../repositories/blogs/comments';
-// import { constants as APP_CONST } from '../../constant/application';
+
 
 export const createComment = async (req, resp) => {
   logger.log(level.debug, '>>Create Commnets');

@@ -2,59 +2,48 @@
 
 import { Router } from 'express';
 import { appAuthMiddleware } from '../../middleware/authentication';
-// import { validate } from '../../validator/blogs.validator';
-// import { constants as VALIDATOR } from '../../constant/validator/blogs';
+import { validate } from '../../validator/likes.validator';
+import { constants as VALIDATOR } from '../../constant/validator/likes';
 import * as likesController from '../../controllers/blogs/likes.controller';
 const routes = new Router({ mergeParams: true });
-// fileFilter: (req, file, cb) => {
-//   if (
-//     file.mimetype == 'image/png' ||
-//     file.mimetype == 'image/jpg' ||
-//     file.mimetype == 'image/jpeg'
-//   ) {
-//     console.log('++++++++++++');
-//     cb(null, true);
-//   } else {
-//     cb(null, false);
-//     return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-//   }
-// }
 
 const PATH = {
   CREATE_LIKES: '/',
-  GET_LIKES: '/:blogId'
+  GET_LIKES: '/:blogId',
+  DELETE_LIKE: '/:id',
+  UPDATE_LIKE: '/:id'
 };
 
 routes.use(appAuthMiddleware);
 /**
- * @api {POST} /api/blogs/
- * @desc Blog create API
+ * @api {POST} /api/likes/
+ * @desc Like create API
  * @access PRIVATE
  */
-routes.post(PATH.CREATE_LIKES, likesController.createLike);
+routes.post(PATH.CREATE_LIKES, validate(VALIDATOR.CREATE_LIKE), likesController.createLike);
 /**
- * @api {GET} /api/blogs/
- * @desc Get all Blog of Authenticated user API
+ * @api {GET} /api/likes/
+ * @desc Get all Like of Blog
  * @access PRIVATE
  */
-routes.get(PATH.GET_LIKES, likesController.getLikes);
-/**
- * @api {GET} /api/blogs/:id
- * @desc GET Blog API
- * @access PRIVATE
- */
-// routes.get(PATH.GET_BLOG, blogsController.getBlogById);
+routes.get(PATH.GET_LIKES, validate(VALIDATOR.GET_LIKES), likesController.getLikes);
 // /**
-//  * @api {PUT} /api/blogs/:id
-//  * @desc Update Blog API
+//  * @api {GET} /api/likes/:id
+//  * @desc GET Like API
 //  * @access PRIVATE
 //  */
-// routes.put(PATH.UPDATE_BLOG, blogsController.updateBlog);
+// routes.get(PATH.GET_BLOG, blogsController.getLikeById);
 // /**
-//  * @api {DELETE} /api/blogs/:id
-//  * @desc Delete Blog API
+//  * @api {PUT} /api/likes/:id
+//  * @desc Update Like API
 //  * @access PRIVATE
 //  */
-// routes.delete(PATH.DELETE_BLOG, blogsController.deleteBlog);
+// routes.put(PATH.UPDATE_LIKE, likesController.updateDelete);
+// /**
+//  * @api {DELETE} /api/likes/:id
+//  * @desc Delete Like API
+//  * @access PRIVATE
+//  */
+// routes.delete(PATH.DELETE_LIKE, likesController.deleteDelete);
 
 export default routes;

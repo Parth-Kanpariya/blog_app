@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 const config = {
   headers: {
@@ -6,15 +5,17 @@ const config = {
   }
 };
 export const createFollowingService = async (id) => {
-    console.log(id, "/////////////////////")
   try {
-    // console.log(body);
-    const resp = await axios.post('/api/followings/', null,
-    {
-        params:{
-            blogUserId:id
+    const resp = await axios.post(
+      '/api/followings/',
+      null,
+      {
+        params: {
+          blogUserId: id
         }
-    }, config);
+      },
+      config
+    );
     return resp;
   } catch (error) {
     return error;
@@ -22,20 +23,27 @@ export const createFollowingService = async (id) => {
 };
 
 export const getFollowingService = async (id) => {
-  console.log(id, '=========7777777777==========++++++++++++++++++++');
-
   try {
-    const commentList = await axios.get(
-      `/api/followings/${id}`,
-      {
-        // user_id: localStorage.userId
-        // // params: {
-        // //   title: query
-        // // }
-      },
-      config
-    );
+    const commentList = await axios.get(`/api/followings/${id}`, config);
     return commentList;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getMyFollowingService = async () => {
+  try {
+    const commentList = await axios.get(`/api/followings/`, config);
+    return commentList;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const unFollowingService = async (id) => {
+  try {
+    const resp = await axios.delete(`http://localhost:3000/api/followings/${id}`, null, config);
+    return resp;
   } catch (error) {
     return error;
   }

@@ -2,59 +2,52 @@
 
 import { Router } from 'express';
 import { appAuthMiddleware } from '../../middleware/authentication';
-// import { validate } from '../../validator/blogs.validator';
-// import { constants as VALIDATOR } from '../../constant/validator/blogs';
+import { validate } from '../../validator/comments.validator';
+import { constants as VALIDATOR } from '../../constant/validator/comments';
 import * as commentsController from '../../controllers/blogs/comments.controller';
 const routes = new Router({ mergeParams: true });
-// fileFilter: (req, file, cb) => {
-//   if (
-//     file.mimetype == 'image/png' ||
-//     file.mimetype == 'image/jpg' ||
-//     file.mimetype == 'image/jpeg'
-//   ) {
-//     console.log('++++++++++++');
-//     cb(null, true);
-//   } else {
-//     cb(null, false);
-//     return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-//   }
-// }
 
 const PATH = {
   CREATE_COMMENT: '/',
-  GET_COMMENTS: '/:blogId'
+  GET_COMMENTS: '/:blogId',
+  DELETE_COMMENT: '/:id',
+  UPDATE_COMMENT: '/:id'
 };
 
 routes.use(appAuthMiddleware);
 /**
- * @api {POST} /api/blogs/
+ * @api {POST} /api/comments/
  * @desc Blog create API
  * @access PRIVATE
  */
-routes.post(PATH.CREATE_COMMENT, commentsController.createComment);
+routes.post(
+  PATH.CREATE_COMMENT,
+  validate(VALIDATOR.CREATE_COMMENT),
+  commentsController.createComment
+);
 /**
- * @api {GET} /api/blogs/
+ * @api {GET} /api/comments/:blogId
  * @desc Get all Blog of Authenticated user API
  * @access PRIVATE
  */
-routes.get(PATH.GET_COMMENTS, commentsController.getComments);
-/**
- * @api {GET} /api/blogs/:id
- * @desc GET Blog API
- * @access PRIVATE
- */
-// routes.get(PATH.GET_BLOG, blogsController.getBlogById);
+routes.get(PATH.GET_COMMENTS, validate(VALIDATOR.GET_COMMENTS), commentsController.getComments);
 // /**
-//  * @api {PUT} /api/blogs/:id
-//  * @desc Update Blog API
+//  * @api {GET} /api/comments/:id
+//  * @desc GET comments API
 //  * @access PRIVATE
 //  */
-// routes.put(PATH.UPDATE_BLOG, blogsController.updateBlog);
+// routes.get(PATH.GET_BLOG, commentsController.getCommentById);
 // /**
-//  * @api {DELETE} /api/blogs/:id
-//  * @desc Delete Blog API
+//  * @api {PUT} /api/comments/:id
+//  * @desc Update comments API
 //  * @access PRIVATE
 //  */
-// routes.delete(PATH.DELETE_BLOG, blogsController.deleteBlog);
+// routes.put(PATH.UPDATE_COMMENT, commentsController.updateComment);
+// /**
+//  * @api {DELETE} /api/comments/:id
+//  * @desc Delete comments API
+//  * @access PRIVATE
+//  */
+// routes.delete(PATH.DELETE_COMMENT, commentsController.deleteComment);
 
 export default routes;

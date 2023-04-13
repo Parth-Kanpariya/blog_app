@@ -14,9 +14,6 @@ const schema = {
   user_id: {
     type: String,
     required: [true, 'User should be LoggedIn!!']
-  },
-  text: {
-    type: String
   }
 };
 

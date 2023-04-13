@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable array-callback-return */
 import React, { useEffect, useState } from 'react';
 import BlogCard from './BlogCard';
-
 import { getBlogService } from '../services/blogService';
 
 function BlogList({ id, query }) {
@@ -10,7 +11,6 @@ function BlogList({ id, query }) {
     const fetchBlogList = async () => {
       const BlogList = await getBlogService(id);
       setBlogs(BlogList.data.data.data);
-      console.log(BlogList.data.data.data);
     };
     fetchBlogList();
   }, []);

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import SetAuthToken from '../helper/SetAuthToken';
 // register user
 export const RegisterUser = async (userData) => {
@@ -13,16 +12,11 @@ export const RegisterUser = async (userData) => {
 
   try {
     const resp = await axios.post('/api/user/signup', body, config);
-    console.log(resp.status);
     if (resp.status !== 200) {
       return null;
     }
     return resp;
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach((error) => toast.error(error.msg));
-    }
     return null;
   }
 };
@@ -50,10 +44,6 @@ export const loginUser = async (userData) => {
     }
     return null;
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach((error) => toast.error(error.msg));
-    }
     return null;
   }
 };
@@ -68,41 +58,44 @@ export const getUser = async () => {
 
   try {
     const resp = await axios.get('/api/user/me', null, config);
-    console.log(resp.data);
     if (resp.status === 200) {
       return resp.data;
     }
     return null;
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach((error) => toast.error(error.msg));
-    }
-    toast.error(errors);
+    return null;
   }
 };
 
 //update user
-
 export const updateUser = async (body) => {
+  try {
+    const resp = await axios.put('/api/user/me', body);
+    if (resp.status === 200) {
+      return resp.data;
+    }
+    return null;
+  } catch (err) {
+    return null;
+  }
+};
+
+export const VerifyUserService = async (userData) => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
     }
   };
 
+  const body = JSON.stringify(userData);
+
   try {
-    const resp = await axios.put('/api/user/me', body);
-    console.log(resp.data);
-    if (resp.status === 200) {
-      return resp.data;
+    const resp = await axios.post('/api/user/verification', body, config);
+    if (resp.status !== 200) {
+      return null;
     }
-    return null;
+    return resp;
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach((error) => toast.error(error.msg));
-    }
-    toast.error(errors);
+    return null;
   }
 };

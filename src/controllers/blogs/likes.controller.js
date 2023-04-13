@@ -9,7 +9,6 @@ import {
 } from '../../utils/utility';
 import { validationResult } from 'express-validator';
 import * as likeRepo from '../../repositories/blogs/likes';
-// import { constants as APP_CONST } from '../../constant/application';
 
 export const createLike = async (req, resp) => {
   logger.log(level.debug, '>>Create Likes');

@@ -2,23 +2,23 @@ import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import PrivateRoutes from './helper/PrivateRoutes';
 import Home from './pages/Home';
-import Blog from './component/Blog';
+import Blog from './pages/Blog';
 import Header from './component/header';
 import Login from './pages/Login';
 import Register from './pages/SignUp';
 import Profile from './pages/Profile';
 import BlogList from './component/BlogList';
-import Following from './component/Following';
-import CreateBlog from './component/CreateBlog';
+import Following from './pages/Following';
+import CreateBlog from './pages/CreateBlog';
 import SetAuthToken from './helper/SetAuthToken';
 import EditProfile from './pages/EditProfile';
 import { useState } from 'react';
-
-import { useEffect } from 'react';
 import EditBlog from './pages/EditBlog';
+import BlogsOfFollowing from './pages/BlogsOfFollowing';
+import VerifyUser from './pages/VerifyUser';
+
 if (localStorage.token && localStorage.userId) {
   SetAuthToken(localStorage.token);
-  // console.log(localStorage.userId)
 }
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,7 +41,9 @@ function App() {
             <Route path="/profile/create" element={<CreateBlog />} />
             <Route path="/profile/editblog" element={<EditBlog />} />
           </Route>
+          <Route path="blogs/:id" element={<BlogsOfFollowing />} />
         </Route>
+        <Route path="/verifyUser" element={<VerifyUser />} />
         <Route path="/register" element={<Register />} />{' '}
         <Route path="/login" element={<Login />} />{' '}
       </Routes>{' '}

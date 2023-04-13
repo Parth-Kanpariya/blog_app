@@ -31,20 +31,7 @@ export const getLikes = async (query, userId, blogId) => {
           blog_id: blogId
         }
       },
-      // {
-      //   $lookup: {
-      //     from: 'likes',
-      //     localField: 'blog_id',
-      //     foreignField: 'blog_id',
-      //     as: 'likes'
-      //   }
-      // },
-      // {
-      //   $addFields: {
-      //     numberOfLikes: { $size: '$likes' }
-      //   }
-      // }
-
+      
       {
         $lookup: {
           from: 'likes',

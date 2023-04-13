@@ -6,7 +6,6 @@ const config = {
 };
 export const createCommentService = async (body) => {
   try {
-    console.log(body);
     const resp = await axios.post('/api/comments/', body, config);
     return resp;
   } catch (error) {
@@ -15,18 +14,8 @@ export const createCommentService = async (body) => {
 };
 
 export const getCommentService = async (blogId) => {
-  console.log(blogId, '===================++++++++++++++++++++');
   try {
-    const commentList = await axios.get(
-      `/api/comments/${blogId}`,
-      {
-        // user_id: localStorage.userId
-        // // params: {
-        // //   title: query
-        // // }
-      },
-      config
-    );
+    const commentList = await axios.get(`/api/comments/${blogId}`, config);
     return commentList;
   } catch (error) {
     return error;

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import RoundImage from './RoundImage';
 import logo from '../logo192.png';
@@ -5,7 +6,6 @@ import { Col, Row } from 'react-bootstrap';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import './header.css';
 import { useNavigate } from 'react-router-dom';
-import { getUser } from '../services/authService';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../redux/actions';
 
@@ -20,7 +20,6 @@ function Header(props) {
   const userData = useSelector((state) => state.user);
 
   const toggle = () => setIsOpen(!isOpen);
-  const handleHideDropdown = () => setIsOpen(false);
   const token = localStorage.token;
   const userId = localStorage.userId;
 
@@ -107,18 +106,22 @@ function Header(props) {
               aria-expanded={isOpen}
               className="profile-toggle">
               <RoundImage img={userData.user?.profile_image} />
-              <h3 style={{ marginLeft: '3px' }} className="profile-username">
+              <h3
+                style={{
+                  marginLeft: '3px',
+                  fontFamily: "sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+                }}
+                className="profile-username">
                 {userData.user?.firstname}
               </h3>
             </DropdownToggle>{' '}
             {isOpen === true && (
               <DropdownMenu end className="profile-menu">
+                <DropdownItem className="dropdown-item"> {userData.user?.firstname}</DropdownItem>{' '}
                 <DropdownItem className="dropdown-item" onClick={handleProfileClick}>
                   {' '}
                   Profile{' '}
                 </DropdownItem>{' '}
-                {/* <DropdownItem> Settings </DropdownItem>{' '} */}{' '}
-                <DropdownItem className="dropdown-item" divider onClick={handleProfileClick} />{' '}
                 <DropdownItem className="dropdown-item" onClick={handleLogOutClick}>
                   {' '}
                   Sign out{' '}
@@ -132,9 +135,4 @@ function Header(props) {
     </div>
   );
 }
-//    /* (
-//                         <Col style={{ marginTop: '2.4rem', cursor: 'pointer   ' }}>
-//                           <RoundImage />{' '}
-//                         </Col>
-//                       )
 export default Header;

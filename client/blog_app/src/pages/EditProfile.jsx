@@ -1,37 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Form, Formik, Field } from 'formik';
 import CustomInput from '../component/CustomInput';
-import { registerSchema } from '../pages/registerInputSchema';
 import Button from '../component/Button';
-import { Link, useNavigate, Navigate } from 'react-router-dom';
-import { RegisterUser, getUser, updateUser } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
+import { updateUser } from '../services/authService';
 import { ToastContainer } from 'react-toastify';
 import { successToast, errorToast } from '../helper/ToastComponent';
 import 'react-toastify/dist/ReactToastify.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser as updateUSerAction } from '../redux/actions';
 
 function EditProfile() {
   const navigate = useNavigate();
   const userPayload = useSelector((state) => state.user);
-
-  // const { firstname } = JSON.parse(localStorage.user);
-  // setFirstname(userPayload.user?.firstname);
-  console.log(userPayload.user?.firstname);
+  const dispatch = useDispatch();
   const onSubmit = async (values, actions) => {
     const formData = new FormData();
     formData.append('firstname', values.firstname);
     formData.append('profile_image', values.profile_image);
 
-    console.log(values);
-    // actions.resetForm();
-
     try {
       const resp = await updateUser(formData);
       if (resp) {
-        console.log(resp.data.data, 'RRRRRREEEEEEEEDDDDDDUUUUUUUXXXXXXX');
-
         successToast('User updated Successfully');
-        window.location.reload();
+        dispatch(updateUSerAction(resp.data.data));
+        navigate('/profile');
         return;
       }
       errorToast('User is not updated!');
@@ -48,9 +41,7 @@ function EditProfile() {
           firstname: userPayload.user?.firstname,
           profile_image: null
         }}
-        onSubmit={onSubmit}
-        // validationSchema={registerSchema}
-      >
+        onSubmit={onSubmit}>
         {({ errors, touched, setFieldValue }) => (
           <Form>
             <Field
