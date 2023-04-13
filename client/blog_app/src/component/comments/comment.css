@@ -1,5 +1,21 @@
-.commnetText{
+.commnetText {
     font-size: 15px;
     font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.username-container {
+    margin-left: 8px;
+}
+
+.userName {
+    font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.comment-container {
+    text-align: 'justify'
+}
+
+.comment-container-row {
+    display: flex;
+    align-items: center;
+}

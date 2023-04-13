@@ -20,6 +20,8 @@
 
 .profile-username {
     font-weight: 500;
+    margin-left: 3px;
+    font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .profile-menu {
@@ -43,5 +45,27 @@
 
 .dropdown-item {
     background-color: white;
-    font-family: "sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif";
+    font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.logo-container {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.App-logo {
+    margin-top: 0rem;
+    height: 90px;
+    width: 100px;
 }

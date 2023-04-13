@@ -138,41 +138,22 @@ function Blog() {
     return formattedDate;
   };
   return (
-    <div style={{ margin: '1rem' }}>
+    <div className="blogContainer">
       <Row className="user-profile">
         <Col>
           <RoundImage img={user.profile_image} className="profile-photo" />
         </Col>{' '}
         <Col>
-          <p
-            className="username"
-            style={{ fontFamily: "sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
-            {' '}
-            {user.firstname}{' '}
-          </p>{' '}
+          <p className="username"> {user.firstname} </p>{' '}
           <p className="user-bio"> {dateString(BlogData.created_at)} </p>{' '}
         </Col>
         {user.user_id !== userId && (
           <Col>
             {isFollowing === false ? (
-              <Button
-                style={{
-                  marginLeft: '1rem',
-                  borderRadius: '15%',
-                  backgroundColor: 'black',
-                  color: 'white'
-                }}
-                onClick={handleFollowClick}
-                text="+ follow"
-              />
+              <Button className="followButton" onClick={handleFollowClick} text="+ follow" />
             ) : (
               <Button
-                style={{
-                  marginLeft: '1rem',
-                  borderRadius: '15%',
-                  backgroundColor: '#454545',
-                  color: 'white'
-                }}
+                className="followingButton"
                 onClick={handleUnFollowClick}
                 text="✓ following"
               />
@@ -181,55 +162,20 @@ function Blog() {
         )}
       </Row>{' '}
       <Row className="blog-description">
-        <h1
-          style={{
-            fontSize: '2.8rem',
-            textAlign: 'center',
-            marginBottom: '5px',
-            fontFamily: "sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          }}>
-          {' '}
-          {capitalizeWords(BlogData.title)}{' '}
-        </h1>{' '}
-        <div style={{ display: 'flex', justifyContent: 'center', margin: '2rem' }}>
-          <img
-            style={{ maxWidth: '800px', maxHeight: '500px' }}
-            src={BlogData.image}
-            alt="example.com"
-          />
+        <h1 className="title"> {capitalizeWords(BlogData.title)} </h1>{' '}
+        <div className="imageContainer">
+          <img className="blog-image" src={BlogData.image} alt="example.com" />
         </div>{' '}
-        <p
-          style={{
-            fontSize: '1.5rem',
-            fontFamily: "source-serif-pro, Georgia, Cambria, 'Times New Roman', Times, serif"
-          }}>
-          {' '}
-          {BlogData.description}{' '}
-        </p>{' '}
+        <p className="blog-description"> {BlogData.description} </p>{' '}
       </Row>{' '}
       <div style={{ display: 'flex', marginLeft: '2rem' }}>
         {BlogData.tags?.map((tag, i) => (
-          <p
-            key={i}
-            style={{
-              backgroundColor: 'rgba(242, 242, 242, 1)',
-              color: 'black',
-              padding: '0.8rem',
-              marginLeft: '5px',
-              borderRadius: '15%'
-            }}>
+          <p key={i} className="tags">
             {tag}
           </p>
         ))}
       </div>
-      <Row
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'left',
-          margin: '2rem',
-          marginBottom: '3.5rem'
-        }}>
+      <Row className="row-of-icons">
         <Icon
           style={{
             marginLeft: '5px',
@@ -245,7 +191,7 @@ function Blog() {
           fixedWidth
         />
 
-        <p style={{ marginLeft: '10px', marginRight: '20px' }}> {noOfLikes || 0}</p>
+        <p className="numberOfLikes"> {noOfLikes || 0}</p>
 
         <Icon
           style={{

@@ -19,9 +19,7 @@ function BlogCard(props) {
       ?.join(' ');
   }
   return (
-    <div
-      style={{ cursor: 'pointer ', marginTop: '0.8rem', marginLeft: '0.8rem' }}
-      onClick={handleBlogClick}>
+    <div className="card-container" onClick={handleBlogClick}>
       <Row className="user-profile">
         <Col>
           <RoundImage
@@ -31,64 +29,22 @@ function BlogCard(props) {
           />
         </Col>{' '}
         <Col>
-          <p
-            className="username"
-            style={{
-              fontSize: '1.1rem',
-              fontFamily: "sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-            }}>
-            {' '}
-            {user[0].firstname}{' '}
-          </p>
+          <p className="username"> {user[0].firstname} </p>
         </Col>{' '}
       </Row>{' '}
       <Row className="blog-description">
-        <h1
-          style={{
-            fontSize: '2.5rem',
-            fontFamily: "sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-          }}>
-          {' '}
-          {capitalizeWords(title)}{' '}
-        </h1>
-        <Row
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            margin: 0
-          }}>
+        <h1 className="blog-title"> {capitalizeWords(title)} </h1>
+        <Row className="description-container">
           <Col>
-            <p
-              style={{
-                whiteSpace: 'pre-wrap',
-                wordWrap: 'break-word',
-                maxWidth: '800px',
-                fontSize: '1.5rem',
-                fontFamily: "source-serif-pro, Georgia, Cambria, 'Times New Roman', Times, serif"
-              }}>
-              {' '}
-              {description.substr(0, 200)}...{' '}
-            </p>{' '}
+            <p className="blog-description-paragraph"> {description.substr(0, 200)}... </p>{' '}
           </Col>
           <Col>
-            <img
-              style={{ width: '140px', height: '150px', marginLeft: '8rem' }}
-              src={image}
-              alt="example.com"
-            />
+            <img className="blog-image" src={image} alt="example.com" />
           </Col>
         </Row>
       </Row>{' '}
-      <div style={{ display: 'flex', marginLeft: '2rem', marginTop: 0 }}>
-        <p
-          style={{
-            backgroundColor: 'rgba(242, 242, 242, 1)',
-            color: 'black',
-            padding: '0.8rem',
-            borderRadius: '15%'
-          }}>
-          {props?.blog?.tags[0]}
-        </p>
+      <div className="tags-container">
+        <p className="tags">{props?.blog?.tags[0]}</p>
       </div>
       <hr />
     </div>

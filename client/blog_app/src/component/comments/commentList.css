@@ -1,0 +1,13 @@
+.comment-list-container {
+    margin-left: 2rem;
+}
+
+.comment-heading {
+    text-align: justify;
+    font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.list-container {
+    margin-bottom: 5rem;
+    text-align: justify;
+}

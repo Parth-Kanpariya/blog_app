@@ -3,10 +3,16 @@
     align-items: center;
     margin-bottom: 1rem;
     margin-left: 1rem;
+    margin-top: 1.8rem;
+    cursor: pointer;
 }
 
 .profile-photo {
     width: 6rem;
     height: 6rem;
     margin-right: 1rem;
+}
+
+.username {
+    font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

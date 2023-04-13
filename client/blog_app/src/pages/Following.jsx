@@ -28,8 +28,7 @@ function Following() {
             <Row
               className="user-profile"
               key={following?.following_user?.user_id}
-              onClick={() => handleFollowingClick(following?.following_user?.user_id)}
-              style={{ marginTop: '1.8rem', cursor: 'pointer' }}>
+              onClick={() => handleFollowingClick(following?.following_user?.user_id)}>
               <Col>
                 <RoundImage
                   className="profile-photo"
@@ -37,12 +36,7 @@ function Following() {
                 />
               </Col>{' '}
               <Col>
-                <h2
-                  className="username"
-                  style={{ fontFamily: "sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
-                  {' '}
-                  {following?.following_user?.firstname}{' '}
-                </h2>{' '}
+                <h2 className="username"> {following?.following_user?.firstname} </h2>{' '}
                 {/* <p className="user-bio"> My bio </p> */}
               </Col>{' '}
             </Row>

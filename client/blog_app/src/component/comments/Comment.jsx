@@ -5,18 +5,13 @@ import './comment.css';
 
 function Comment({ comment, user }) {
   return (
-    <div style={{ textAlign: 'justify' }}>
-      <Row style={{ display: 'flex', alignItems: 'center' }}>
+    <div className="comment-container">
+      <Row className="comment-container-row">
         <Col>
           <RoundImage img={user.profile_image} style={{ width: '30px', height: '30px' }} />
         </Col>
-        <Col style={{ marginLeft: '8px' }}>
-          <p
-            style={{
-              fontFamily: "sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-            }}>
-            {user.firstname}
-          </p>
+        <Col className="username-container">
+          <p className="userName">{user.firstname}</p>
         </Col>
       </Row>
 

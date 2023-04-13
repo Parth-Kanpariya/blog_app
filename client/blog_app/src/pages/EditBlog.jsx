@@ -2,19 +2,19 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'reactstrap';
 import { Form, Formik, Field } from 'formik';
-import * as Yup from 'yup';
+// import * as Yup from 'yup';
 import CustomInput, { CustomTextArea } from '../component/CustomInput';
 import { getBlogByIdService, updateBlogService } from '../services/blogService';
 import { ToastContainer } from 'react-toastify';
 import { successToast, errorToast } from '../helper/ToastComponent';
 import { useNavigate, useLocation } from 'react-router-dom';
-const validationSchema = Yup.object({
-  title: Yup.string().required('Required'),
-  description: Yup.string().required('Required'),
-  category: Yup.string().required('Required'),
-  image: Yup.mixed().required('Required'),
-  tags: Yup.string().required('Please Enter tags')
-});
+// const validationSchema = Yup.object({
+//   title: Yup.string().required('Required'),
+//   description: Yup.string().required('Required'),
+//   category: Yup.string().required('Required'),
+//   image: Yup.mixed().required('Required'),
+//   tags: Yup.string().required('Please Enter tags')
+// });
 function EditBlog() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -65,8 +65,7 @@ function EditBlog() {
           image: null,
           tags: blogData.tags.toString().split(',').join(' ')
         }}
-        onSubmit={handleSubmit}
-        >
+        onSubmit={handleSubmit}>
         {({ isSubmitting, setFieldValue }) => (
           <Form>
             <label htmlFor="title">Title:</label>

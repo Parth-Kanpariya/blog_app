@@ -29,31 +29,25 @@ function Profile() {
   };
   return (
     <div>
-      <nav
-        style={{
-          display: 'flex',
-          justifyContent: 'left',
-          marginLeft: '2rem',
-          marginTop: '1.5rem'
-        }}>
+      <nav className="navbar">
         <Link className="links" name="editProfile" onClick={handleClick} id="edit_profile" to="">
           {' '}
           Edit Profile{' '}
         </Link>{' '}
-        <Link className="links" to="myBlogs" onClick={handleClick} style={{ marginLeft: '2rem' }}>
+        <Link className="links" to="myBlogs" onClick={handleClick}>
           {' '}
           My_Blogs{' '}
         </Link>{' '}
-        <Link className="links" to="following" onClick={handleClick} style={{ marginLeft: '2rem' }}>
+        <Link className="links" to="following" onClick={handleClick}>
           Followings
         </Link>
-        <Link className="links" to="create" onClick={handleClick} style={{ marginLeft: '2rem' }}>
+        <Link className="links" to="create" onClick={handleClick}>
           {' '}
           Create Blog{' '}
         </Link>{' '}
         <Link to="blogs/:id" />
       </nav>{' '}
-      <hr style={{ width: '29rem', margin: 0, marginLeft: '2rem', marginTop: '1rem' }} />
+      <hr className="horizontal-line" />
       <Outlet />
     </div>
   );

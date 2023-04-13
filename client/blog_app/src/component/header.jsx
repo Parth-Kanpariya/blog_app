@@ -59,30 +59,10 @@ function Header(props) {
 
   return (
     <div>
-      <Row
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignContent: 'center',
-          alignItems: 'center',
-          marginLeft: '2rem',
-          marginRight: '2rem'
-        }}>
+      <Row className="header-container">
         <Col>
-          <Row
-            style={{
-              display: 'flex',
-              alignContent: 'center',
-              alignItems: 'center',
-              cursor: 'pointer'
-            }}
-            onClick={handleLogoClick}>
-            <img
-              src={logo}
-              className="App-logo"
-              style={{ marginTop: '0rem', height: '90px', width: '100px' }}
-              alt="logo"
-            />{' '}
+          <Row className="logo-container" onClick={handleLogoClick}>
+            <img src={logo} className="App-logo" alt="logo" />{' '}
             <Col>
               <h1>Excellent</h1>
             </Col>
@@ -106,14 +86,7 @@ function Header(props) {
               aria-expanded={isOpen}
               className="profile-toggle">
               <RoundImage img={userData.user?.profile_image} />
-              <h3
-                style={{
-                  marginLeft: '3px',
-                  fontFamily: "sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif"
-                }}
-                className="profile-username">
-                {userData.user?.firstname}
-              </h3>
+              <h3 className="profile-username">{userData.user?.firstname}</h3>
             </DropdownToggle>{' '}
             {isOpen === true && (
               <DropdownMenu end className="profile-menu">

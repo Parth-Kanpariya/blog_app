@@ -1,0 +1,18 @@
+.comment-input-container {
+    position: fixed;
+    top: 100px;
+    right: 0;
+    bottom: 0;
+    width: 500px;
+    background-color: #f0f0f0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding-top: 60px;
+    align-content: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}

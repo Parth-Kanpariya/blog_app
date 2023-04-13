@@ -4,6 +4,7 @@ import Button from '../Button';
 import { createCommentService } from '../../services/commentService';
 import { successToast, errorToast } from '../../helper/ToastComponent';
 import { ToastContainer } from 'react-bootstrap';
+import './commentInput.css';
 
 function CommentInput(props) {
   const [comment, setComment] = useState('');
@@ -35,44 +36,27 @@ function CommentInput(props) {
     props.cancleCommentBox();
   };
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 100,
-        right: 0,
-        bottom: 0,
-        width: '500px',
-        backgroundColor: '#f0f0f0',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
-        paddingTop: '60px',
-        alignContent: 'center'
-      }}>
+    <div className="comment-input-container">
       <CustomSearchInput
         value={comment}
         onChange={handleCommentChange}
         placeholder="What are your thoughts?"
         style={{ width: '25rem', height: '20px' }}
-      />
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: '30px'
-        }}>
+      />{' '}
+      <div className="button-container">
         <Button
           onClick={handleCancleButton}
           text="Cancle"
           style={{ width: '100px', height: '40px', backgroundColor: 'white' }}
-        />
+        />{' '}
         <Button
           onClick={handleCommentSubmit}
           text="Submit"
           type="submit"
           style={{ width: '100px', height: '40px', marginLeft: '50px' }}
-        />
+        />{' '}
         <ToastContainer />
-      </div>
+      </div>{' '}
     </div>
   );
 }
