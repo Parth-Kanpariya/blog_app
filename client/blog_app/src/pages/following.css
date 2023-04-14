@@ -1,16 +1,16 @@
 .user-profile {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
-    margin-left: 1rem;
-    margin-top: 1.8rem;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    margin-top: 26px;
     cursor: pointer;
 }
 
 .profile-photo {
-    width: 6rem;
-    height: 6rem;
-    margin-right: 1rem;
+    width: 90px;
+    height: 90px;
+    margin-right: 15px;
 }
 
 .username {

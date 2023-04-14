@@ -10,6 +10,7 @@ function CommentInput(props) {
   const [comment, setComment] = useState('');
 
   const handleCommentSubmit = async (e) => {
+    e.preventDefault();
     if (comment === '') return;
     try {
       const body = {

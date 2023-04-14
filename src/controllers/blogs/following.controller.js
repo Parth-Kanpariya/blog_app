@@ -20,7 +20,6 @@ export const createFollowing = async (req, resp) => {
     }
 
     const { user_id } = req.currentUser;
-    console.log(req.query);
     const createdfollowing = await followingRepo.createFollowing(user_id, req.query.blogUserId);
     successResponseCreated(resp, createdfollowing);
   } catch (error) {

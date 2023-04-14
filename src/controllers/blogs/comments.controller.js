@@ -30,7 +30,6 @@ export const createComment = async (req, resp) => {
 // Get Blog
 export const getComments = async (req, resp) => {
   logger.log(level.debug, '>>Get Commnets');
-  console.log(req.params.blogId);
   try {
     // const { user_id } = req.currentUser;
     const comments = await commentsRepo.getComments(req.query, req.params.blogId);

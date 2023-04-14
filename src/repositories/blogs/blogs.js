@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { logger, level } from '../../config/logger';
 import blogModel from '../../models/blogs';
+import likeModel from '../../models/likes';
+import commentModel from '../../models/comments';
 import { constants as APP_CONST } from '../../constant/application';
 
 // create blog
@@ -84,7 +86,7 @@ export const getBlogs = async (query, userId) => {
 };
 // update blog
 
-export const updateBlog = async (body, userId, blogId,req) => {
+export const updateBlog = async (body, userId, blogId, req) => {
   logger.log(level.info, `>> update blog repo`);
   const blogs = await blogModel.get({
     blog_id: blogId,
@@ -154,6 +156,8 @@ export const deleteBlog = async (userId, blogId) => {
     return data;
   }
   await blogModel.delete({ user_id: userId, blog_id: blogId });
+  await likeModel.delete({ blog_id: blogId });
+  await commentModel.delete({ blog_id: blogId });
 
   data = {
     message: 'blog deleted!!'
@@ -192,7 +196,7 @@ export const deletedCheckedBlogs = async (userId, body) => {
 // get blog
 export const getBlogById = async (id) => {
   logger.log(level.info, `>> get blog repo`);
-  console.log('++++');
+
   const blog = await blogModel.aggregate([
     {
       $match: {

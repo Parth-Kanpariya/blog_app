@@ -22,6 +22,11 @@ function BlogList({ id, query }) {
       blog.category.toLowerCase().includes(query?.toLowerCase() || '')
     );
   });
+
+  if (Blogs.length === 0) {
+    return;
+  }
+
   return (
     <div>
       {id === undefined

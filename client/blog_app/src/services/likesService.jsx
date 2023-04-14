@@ -15,8 +15,8 @@ export const createLikeService = async (body) => {
 
 export const getLikeService = async (blogId) => {
   try {
-    const commentList = await axios.get(`/api/likes/${blogId}`, config);
-    return commentList;
+    const like = await axios.get(`/api/likes/${blogId}`, config);
+    return like;
   } catch (error) {
     return error;
   }

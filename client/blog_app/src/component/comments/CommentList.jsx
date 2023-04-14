@@ -7,7 +7,7 @@ function CommentList({ blogId }) {
   useEffect(() => {
     const fetchCommentList = async () => {
       const commentDataList = await getCommentService(blogId);
-      setCommentList(commentDataList.data.data.data[0].comments);
+      setCommentList(commentDataList?.data?.data?.data[0]?.comments);
     };
     fetchCommentList();
   }, [blogId]);

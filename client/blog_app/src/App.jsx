@@ -16,6 +16,7 @@ import { useState } from 'react';
 import EditBlog from './pages/EditBlog';
 import BlogsOfFollowing from './pages/BlogsOfFollowing';
 import VerifyUser from './pages/VerifyUser';
+import FavoriteBlogs from './pages/FavoritBlogs';
 
 if (localStorage.token && localStorage.userId) {
   SetAuthToken(localStorage.token);
@@ -33,11 +34,12 @@ function App() {
         {' '}
         <Route path="/" element={<PrivateRoutes />}>
           <Route path="/" element={<Home searchQuery={searchQuery} />} />
-          <Route path="/blog/:id" element={<Blog />} />
+          <Route path="/blog/:id" element={<Blog onSearch={handleSearch} />} />
           <Route path="/profile" element={<Profile />}>
             <Route index element={<EditProfile />} />
             <Route path="/profile/myBlogs" element={<BlogList id="myBlogs" />} />{' '}
             <Route path="/profile/following" element={<Following />} />
+            <Route path="/profile/favorits" element={<FavoriteBlogs />} />
             <Route path="/profile/create" element={<CreateBlog />} />
             <Route path="/profile/editblog" element={<EditBlog />} />
           </Route>

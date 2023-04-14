@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 function BlogCard(props) {
   const { description, title, user, image, blog_id } = props.blog;
+
   const navigate = useNavigate();
   const handleBlogClick = () => {
     navigate(`/blog/${blog_id}`);

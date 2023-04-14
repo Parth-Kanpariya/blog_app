@@ -7,7 +7,6 @@ import followingModel from '../../models/following';
 export const createFollowing = async (userId, blogUserId) => {
   logger.log(level.info, `>> Create Like repo body=${JSON.stringify()}`);
   let data = {};
-  console.log(blogUserId, '--------------------------');
   const newFollowing = await followingModel.add({
     user_id: blogUserId,
     follower_id: userId
@@ -24,8 +23,7 @@ export const createFollowing = async (userId, blogUserId) => {
 export const getFollowing = async (query, userId, blogUserId) => {
   logger.log(level.info, `>> get like repo`);
   const docLength = await followingModel.count();
-  console.log(userId);
-  console.log(blogUserId);
+
   const followings = await userModel.aggregate(
     [
       {
@@ -64,7 +62,7 @@ export const getFollowing = async (query, userId, blogUserId) => {
       limit: +query.limit
     }
   );
-  console.log(followings);
+
   let data = {};
   if (!followings || followings.length <= 0) {
     data = {
@@ -82,7 +80,7 @@ export const getFollowing = async (query, userId, blogUserId) => {
 export const getMyFollowing = async (query, userId) => {
   logger.log(level.info, `>> get like repo`);
   const docLength = await followingModel.count();
-  console.log(userId);
+
   const followings = await userModel.aggregate(
     [
       {
@@ -124,7 +122,7 @@ export const getMyFollowing = async (query, userId) => {
       limit: +query.limit
     }
   );
-  console.log(followings);
+
   let data = {};
   if (!followings || followings.length <= 0) {
     data = {

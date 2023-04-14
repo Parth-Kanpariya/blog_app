@@ -89,7 +89,7 @@ function Header(props) {
               <h3 className="profile-username">{userData.user?.firstname}</h3>
             </DropdownToggle>{' '}
             {isOpen === true && (
-              <DropdownMenu end className="profile-menu">
+              <DropdownMenu end className="profile-menu" style={{ width: '200px' }}>
                 <DropdownItem className="dropdown-item"> {userData.user?.firstname}</DropdownItem>{' '}
                 <DropdownItem className="dropdown-item" onClick={handleProfileClick}>
                   {' '}

@@ -64,14 +64,14 @@ select::placeholder {
 
 textarea[type='checkbox'] {
   width: fit-content;
-  margin-right: 0.5rem;
+  margin-right: 0.8px;
   transform: scale(1.25);
 }
 
 button {
   display: block;
-  margin: 1rem 0;
-  padding: 0.7rem 0.8rem;
+  margin: 15px 0;
+  padding: 10px 12px;
   background-color: #4299e1;
   color: #1a202c;
   border: none;

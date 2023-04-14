@@ -15,14 +15,20 @@ import {
   unFollowingService
 } from '../services/followingService';
 import Icon from '../component/Icon';
+import {
+  createFavoriteService,
+  getFavoriteByIdService,
+  removeFavoritesService
+} from '../services/favoriteService';
 
-function Blog() {
+function Blog(props) {
   const [BlogData, setBlogData] = useState({});
   const [commentBox, setCommentBox] = useState(false);
   const [user, setUser] = useState({});
   const [isFollowing, setIsFollowing] = useState(false);
   const [liked, setLiked] = useState(false);
   const [noOfLikes, setNoOfLikes] = useState(0);
+  const [favorites, setFavorites] = useState(0);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -31,10 +37,13 @@ function Blog() {
     const fetchBlogList = async () => {
       const BlogApiData = await getBlogByIdService(id);
       const likesData = await getLikeService(id);
+      const favorites = await getFavoriteByIdService(id);
       setBlogData(BlogApiData?.data?.data?.data[0]);
       setUser(BlogApiData?.data?.data?.data[0]?.user[0]);
       setLiked(likesData?.data?.data?.data[0]?.userLiked);
       setNoOfLikes(likesData?.data?.data?.data[0]?.numberOfLikes);
+      setFavorites(favorites?.data?.data?.favorits);
+
       const followingData = await getFollowingService(
         BlogApiData?.data?.data?.data[0]?.user[0].user_id
       );
@@ -42,7 +51,6 @@ function Blog() {
     };
     fetchBlogList();
   }, [id]);
-
   const handleFollowClick = async (e) => {
     try {
       const resp = await createFollowingService(user?.user_id);
@@ -80,7 +88,35 @@ function Blog() {
   const handleCancleCommentBox = (e) => {
     setCommentBox(!commentBox);
   };
-
+  //saved button click
+  const handleSavedButtonClick = async (e) => {
+    if (favorites === false) {
+      try {
+        const resp = await createFavoriteService(id);
+        if (resp.status === 201) {
+          successToast('Saved  successfully!');
+          setFavorites(!favorites);
+        } else {
+          errorToast(' Saved follwing!');
+        }
+      } catch (error) {
+        errorToast(' Saved follwing!');
+      }
+    } else if (favorites === true) {
+      try {
+        const resp = await removeFavoritesService(id);
+        if (resp.status === 200) {
+          successToast('Saved  successfully!');
+          setFavorites(!favorites);
+        } else {
+          errorToast(' Saved follwing!');
+        }
+      } catch (error) {
+        errorToast(' Saved follwing!');
+      }
+    }
+  };
+  //delete blog click
   const handleDeleteBlogClick = async (e) => {
     try {
       const resp = await deleteBlogService(id);
@@ -113,6 +149,11 @@ function Blog() {
     } catch (error) {
       errorToast('like not created!');
     }
+  };
+
+  const handleTagsClick = (e) => {
+    props.onSearch(e.target.textContent);
+    navigate('/');
   };
 
   function capitalizeWords(str) {
@@ -164,13 +205,14 @@ function Blog() {
       <Row className="blog-description">
         <h1 className="title"> {capitalizeWords(BlogData.title)} </h1>{' '}
         <div className="imageContainer">
-          <img className="blog-image" src={BlogData.image} alt="example.com" />
+          <img src={BlogData.image} alt="example.com" className="blogImage" />
         </div>{' '}
         <p className="blog-description"> {BlogData.description} </p>{' '}
       </Row>{' '}
+      {/*tags */}
       <div style={{ display: 'flex', marginLeft: '2rem' }}>
         {BlogData.tags?.map((tag, i) => (
-          <p key={i} className="tags">
+          <p key={i} className="tags" onClick={handleTagsClick}>
             {tag}
           </p>
         ))}
@@ -184,7 +226,7 @@ function Blog() {
             width: '30px',
             color: liked === true ? 'black' : 'rgba(117, 117, 117, 1)'
           }}
-          name="Check"
+          name="Clap"
           icon={'faHandsClapping'}
           onClick={handleClapClick}
           size={'1x'}
@@ -201,9 +243,24 @@ function Blog() {
             width: '30px',
             color: 'rgba(117, 117, 117, 1)'
           }}
-          name="Check"
+          name="Comment"
           icon={'faComment'}
           onClick={handleCommentButtonClick}
+          size={'1x'}
+          fixedWidth
+        />
+
+        <Icon
+          style={{
+            marginLeft: '2rem',
+            cursor: 'pointer',
+            height: '30px',
+            width: '30px',
+            color: favorites === true ? 'black' : 'rgba(117, 117, 117, 1)'
+          }}
+          name="favourite"
+          icon={'faBookmark'}
+          onClick={handleSavedButtonClick}
           size={'1x'}
           fixedWidth
         />
@@ -221,7 +278,7 @@ function Blog() {
                 width: '5rem'
               }}
               onClick={handleUpdateBlogClick}
-              text="update"
+              text="edit"
             />
           </Col>
           <Col>

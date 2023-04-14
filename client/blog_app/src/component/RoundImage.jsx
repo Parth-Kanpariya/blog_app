@@ -5,7 +5,11 @@ import './roundImage.css'; // import your stylesheet
 function RoundImage(props) {
   return (
     <div style={props.style} className="container">
-      <img className="round-image" src={props.img} alt="round image" />
+      <img
+        className="round-image"
+        src={props.img || 'http://localhost:3000/static/user.webp'}
+        alt="user"
+      />
     </div>
   );
 }

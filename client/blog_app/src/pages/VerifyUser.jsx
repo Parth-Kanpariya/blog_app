@@ -8,7 +8,11 @@ import { VerifyUserService } from '../services/authService';
 import { ToastContainer } from 'react-toastify';
 import { successToast, errorToast } from '../helper/ToastComponent';
 import 'react-toastify/dist/ReactToastify.css';
-
+import * as Yup from 'yup';
+const validationSchema = Yup.object({
+  otp: Yup.string().required(),
+  email: Yup.string().required()
+});
 function VerifyUser() {
   const navigate = useNavigate();
   const onSubmit = async (values, actions) => {
@@ -32,7 +36,8 @@ function VerifyUser() {
           otp: '',
           email: ''
         }}
-        onSubmit={onSubmit}>
+        onSubmit={onSubmit}
+        validationSchema={validationSchema}>
         {({ errors, touched }) => (
           <Form>
             <Field

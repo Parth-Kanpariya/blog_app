@@ -45,6 +45,10 @@ function Profile() {
           {' '}
           Create Blog{' '}
         </Link>{' '}
+        <Link className="links" to="favorits" onClick={handleClick}>
+          {' '}
+          Favorites{' '}
+        </Link>{' '}
         <Link to="blogs/:id" />
       </nav>{' '}
       <hr className="horizontal-line" />

@@ -10,6 +10,7 @@ import todoRoutes from './todos/todos.routes';
 import commentRoutes from './blogs/comments.routes';
 import likeRoutes from './blogs/likes.routes';
 import followingRoutes from './blogs/following.routes';
+import favoriteRoutes from './blogs/favorites.routes';
 // import git from "git-last-commit";
 // import HTTPStatus from "http-status";
 // const status = "backend service is running";
@@ -22,7 +23,8 @@ const PATH = {
   BLOGS: '/blogs',
   COMMENTS: '/comments',
   LIKES: '/likes',
-  FOLLOWINGS: '/followings'
+  FOLLOWINGS: '/followings',
+  FAVORITES: '/favorites'
 };
 
 // routes.get(PATH.ROOT, (_req, res) => {
@@ -51,5 +53,6 @@ routes.use(PATH.BLOGS, blogRoutes);
 routes.use(PATH.COMMENTS, commentRoutes);
 routes.use(PATH.LIKES, likeRoutes);
 routes.use(PATH.FOLLOWINGS, followingRoutes);
+routes.use(PATH.FAVORITES, favoriteRoutes);
 
 export default routes;

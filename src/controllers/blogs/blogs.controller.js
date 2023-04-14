@@ -15,7 +15,6 @@ export const createBlog = async (req, resp) => {
   const errors = validationResult(req);
   try {
     if (!errors.isEmpty()) {
-      console.log(errors);
       return badRequestError(resp, errors);
     }
 
@@ -43,7 +42,6 @@ export const getBlogs = async (req, resp) => {
 export const getBlogById = async (req, resp) => {
   logger.log(level.debug, '>>Get Blogs');
   try {
-    console.log(req.params.id);
     const blogs = await blogRepo.getBlogById(req.params.id);
     successResponse(resp, blogs);
   } catch (error) {
