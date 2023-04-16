@@ -8,7 +8,7 @@ function BlogsOfFollowing({ query }) {
   useEffect(() => {
     const fetchBlogList = async () => {
       const BlogList = await getBlogService(id);
-      setBlogs(BlogList.data.data.data);
+      setBlogs(BlogList.data.data);
     };
     fetchBlogList();
   }, [id]);

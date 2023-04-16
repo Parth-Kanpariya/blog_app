@@ -24,7 +24,7 @@ function EditBlog() {
   useEffect(() => {
     const fetchBlogList = async () => {
       const BlogData = await getBlogByIdService(blogID);
-      setBlogData(BlogData.data.data.data[0]);
+      setBlogData(BlogData.data.data[0]);
     };
     fetchBlogList();
   }, []);

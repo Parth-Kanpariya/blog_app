@@ -11,7 +11,7 @@ function Following() {
   useEffect(() => {
     const fetchFollowingList = async () => {
       const followingData = await getMyFollowingService();
-      setFollowingList(followingData?.data?.data?.data);
+      setFollowingList(followingData?.data);
     };
     fetchFollowingList();
   }, []);

@@ -9,7 +9,7 @@ function FavoriteBlogs() {
   useEffect(() => {
     const fetchBlogList = async () => {
       const BlogList = await getFavoritesService();
-      setBlogs(BlogList.data.data.data);
+      setBlogs(BlogList.data.data);
     };
     fetchBlogList();
   }, []);

@@ -38,11 +38,11 @@ function Blog(props) {
       const BlogApiData = await getBlogByIdService(id);
       const likesData = await getLikeService(id);
       const favorites = await getFavoriteByIdService(id);
-      setBlogData(BlogApiData?.data?.data?.data[0]);
-      setUser(BlogApiData?.data?.data?.data[0]?.user[0]);
-      setLiked(likesData?.data?.data?.data[0]?.userLiked);
-      setNoOfLikes(likesData?.data?.data?.data[0]?.numberOfLikes);
-      setFavorites(favorites?.data?.data?.favorits);
+      setBlogData(BlogApiData?.data?.data[0]);
+      setUser(BlogApiData?.data?.data[0]?.user[0]);
+      setLiked(likesData?.data[0]?.userLiked);
+      setNoOfLikes(likesData?.data[0]?.numberOfLikes);
+      setFavorites(favorites?.data?.favorits);
 
       const followingData = await getFollowingService(
         BlogApiData?.data?.data?.data[0]?.user[0].user_id

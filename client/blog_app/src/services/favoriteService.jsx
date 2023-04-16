@@ -14,16 +14,16 @@ export const createFavoriteService = async (id) => {
 };
 export const getFavoriteByIdService = async (blogId) => {
   try {
-    const favoriteList = await axios.get(`/api/favorites/${blogId}`, config);
-    return favoriteList;
+    const resp = await axios.get(`/api/favorites/${blogId}`, config);
+    return resp.data;
   } catch (error) {
     return error;
   }
 };
 export const getFavoritesService = async () => {
   try {
-    const favoriteList = await axios.get(`/api/favorites/`, config);
-    return favoriteList;
+    const resp = await axios.get(`/api/favorites/`, config);
+    return resp.data;
   } catch (error) {
     return error;
   }

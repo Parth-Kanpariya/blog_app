@@ -24,8 +24,8 @@ export const createFollowingService = async (id) => {
 
 export const getFollowingService = async (id) => {
   try {
-    const commentList = await axios.get(`/api/followings/${id}`, config);
-    return commentList;
+    const resp = await axios.get(`/api/followings/${id}`, config);
+    return resp;
   } catch (error) {
     return error;
   }
@@ -33,8 +33,8 @@ export const getFollowingService = async (id) => {
 
 export const getMyFollowingService = async () => {
   try {
-    const commentList = await axios.get(`/api/followings/`, config);
-    return commentList;
+    const resp = await axios.get(`/api/followings/`, config);
+    return resp?.data?.data;
   } catch (error) {
     return error;
   }
