@@ -44,9 +44,7 @@ function Blog(props) {
       setNoOfLikes(likesData?.data[0]?.numberOfLikes);
       setFavorites(favorites?.data?.favorits);
 
-      const followingData = await getFollowingService(
-        BlogApiData?.data?.data?.data[0]?.user[0].user_id
-      );
+      const followingData = await getFollowingService(BlogApiData?.data?.data[0]?.user[0].user_id);
       setIsFollowing(followingData?.data?.data?.data[0].is_following);
     };
     fetchBlogList();

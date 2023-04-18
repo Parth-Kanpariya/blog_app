@@ -10,9 +10,9 @@ import {
 import { validationResult } from 'express-validator';
 import * as commentsRepo from '../../repositories/blogs/comments';
 
-
+//create comment
 export const createComment = async (req, resp) => {
-  logger.log(level.debug, '>>Create Commnets');
+  logger.log(level.debug, '>>Create Comments');
   const errors = validationResult(req);
   try {
     if (!errors.isEmpty()) {
@@ -27,7 +27,7 @@ export const createComment = async (req, resp) => {
     serverError(resp);
   }
 };
-// Get Blog
+// Get comment
 export const getComments = async (req, resp) => {
   logger.log(level.debug, '>>Get Commnets');
   try {

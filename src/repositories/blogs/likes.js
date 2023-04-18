@@ -3,7 +3,7 @@ import { logger, level } from '../../config/logger';
 import likeModel from '../../models/likes';
 import blogModel from '../../models/blogs';
 
-// create blog
+// create like
 export const createLike = async (body, userId) => {
   logger.log(level.info, `>> Create Like repo body=${JSON.stringify(body)}`);
   let data = {};
@@ -20,7 +20,7 @@ export const createLike = async (body, userId) => {
 
   return data;
 };
-// get blog
+// get likes
 export const getLikes = async (query, userId, blogId) => {
   logger.log(level.info, `>> get like repo`);
   const docLength = await likeModel.count({ blog_id: blogId });
@@ -31,7 +31,7 @@ export const getLikes = async (query, userId, blogId) => {
           blog_id: blogId
         }
       },
-      
+
       {
         $lookup: {
           from: 'likes',
@@ -79,7 +79,7 @@ export const getLikes = async (query, userId, blogId) => {
   if (!likes || likes.length <= 0) {
     data = {
       error: true,
-      message: 'No comments Found!!'
+      message: 'No likes Found!!'
     };
     return data;
   }

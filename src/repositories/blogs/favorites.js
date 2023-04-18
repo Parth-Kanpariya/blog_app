@@ -43,12 +43,11 @@ export const getFavorites = async (query, userId) => {
         $unwind: '$blogs'
       },
       {
-        $lookup:{
-          from:'users',
+        $lookup: {
+          from: 'users',
           localField: 'user_id',
           foreignField: 'user_id',
           as: 'user'
-
         }
       }
     ],
@@ -72,7 +71,7 @@ export const getFavorites = async (query, userId) => {
   return data;
 };
 
-// delete blog
+// remove favorites
 export const deleteFavorite = async (userId, blogId) => {
   logger.log(level.info, `>> Delete Favorite repo`);
   const favorits = await favoriteModel.get({

@@ -30,6 +30,15 @@ export const getBlogService = async (id) => {
   }
 };
 
+export const getFilteredBlogService = async (query) => {
+  try {
+    const resp = await axios.get(`/api/blogs/search/${query}`, null, null, config);
+    return resp.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getBlogByIdService = async (id) => {
   try {
     const resp = await axios.get(`/api/blogs/${id}`, {}, config);

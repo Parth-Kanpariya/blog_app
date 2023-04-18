@@ -17,9 +17,9 @@ select {
   width: 100%;
   padding: 0.65rem 0.5rem;
   font-size: 1rem;
-  color: white;
+  color: black;
   border: 2px solid #4a5568;
-  background-color: #2d3748;
+  background-color: 'white';
   border-radius: 10px;
   outline: none;
 }
@@ -29,9 +29,9 @@ select {
   width: 100%;
   padding: 0.65rem 0.5rem;
   font-size: 1rem;
-  color: white;
+  color: black;
   border: 2px solid #4a5568;
-  background-color: #2d3748;
+  background-color: 'white';
   border-radius: 10px;
   outline: none;
 }

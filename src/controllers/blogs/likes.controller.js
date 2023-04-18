@@ -10,6 +10,7 @@ import {
 import { validationResult } from 'express-validator';
 import * as likeRepo from '../../repositories/blogs/likes';
 
+//create like
 export const createLike = async (req, resp) => {
   logger.log(level.debug, '>>Create Likes');
   const errors = validationResult(req);
@@ -26,7 +27,7 @@ export const createLike = async (req, resp) => {
     serverError(resp);
   }
 };
-// Get Blog
+// Get likes
 export const getLikes = async (req, resp) => {
   logger.log(level.debug, '>>Get Likes');
   try {

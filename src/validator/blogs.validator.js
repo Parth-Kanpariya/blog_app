@@ -27,6 +27,7 @@ export const validate = (method) => {
       error = [];
       break;
     case VALIDATOR.GET_BLOG:
+      console.log('dfdfdf');
       error = [param('id').not().isEmpty()];
       break;
     case VALIDATOR.UPDATE_BLOG:

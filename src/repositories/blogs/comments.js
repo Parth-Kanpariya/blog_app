@@ -2,7 +2,7 @@
 import { logger, level } from '../../config/logger';
 import commentModel from '../../models/comments';
 import blogModel from '../../models/blogs';
-// create blog
+// create Comment
 export const createComment = async (body, userId) => {
   logger.log(level.info, `>> Create Comment repo body=${JSON.stringify(body)}`);
   let data = {};
@@ -19,7 +19,7 @@ export const createComment = async (body, userId) => {
 
   return data;
 };
-// get blog
+// get comments
 export const getComments = async (query, blogId) => {
   logger.log(level.info, `>> get Commet repo ${blogId}`);
   const docLength = await commentModel.count({ blog_Id: blogId });

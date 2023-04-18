@@ -8,6 +8,8 @@ import { getBlogByIdService, updateBlogService } from '../services/blogService';
 import { ToastContainer } from 'react-toastify';
 import { successToast, errorToast } from '../helper/ToastComponent';
 import { useNavigate, useLocation } from 'react-router-dom';
+import TagsInput from 'react-tagsinput';
+import 'react-tagsinput/react-tagsinput.css';
 // const validationSchema = Yup.object({
 //   title: Yup.string().required('Required'),
 //   description: Yup.string().required('Required'),
@@ -31,9 +33,9 @@ function EditBlog() {
 
   async function handleSubmit(values, { resetForm, setSubmitting, setFieldValue }) {
     const formData = new FormData();
-    formData.append('title', values.title);
+    formData.append('title', values.title.toLowerCase());
     formData.append('description', values.description);
-    formData.append('category', values.category);
+    formData.append('category', values.category.toLowerCase());
     formData.append('image', values.image);
     formData.append('tags', values.tags);
     console.log(values);
@@ -63,10 +65,10 @@ function EditBlog() {
           description: blogData.description,
           category: blogData.category,
           image: null,
-          tags: blogData.tags.toString().split(',').join(' ')
+          tags: blogData.tags.toString().split(',')
         }}
         onSubmit={handleSubmit}>
-        {({ isSubmitting, setFieldValue }) => (
+        {({ values, isSubmitting, setFieldValue }) => (
           <Form>
             <label htmlFor="title">Title:</label>
             <Field type="text" name="title" id="title" component={CustomInput} />
@@ -99,7 +101,19 @@ function EditBlog() {
               }}
             />
 
-            <Field type="text" label="tags" name="tags" id="tags" component={CustomInput} />
+            {/* <Field type="text" label="tags" name="tags" id="tags" component={CustomInput} /> */}
+            <label htmlFor="tags">Tags:</label>
+            <Field name="tags">
+              {({ field }) => (
+                <TagsInput
+                  {...field}
+                  value={values.tags}
+                  onChange={(tags) => {
+                    field.onChange({ target: { name: field.name, value: tags } });
+                  }}
+                />
+              )}
+            </Field>
 
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Updating...' : 'Update'}

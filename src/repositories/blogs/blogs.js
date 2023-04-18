@@ -29,7 +29,7 @@ export const createBlog = async (body, req, userId) => {
     }
   });
   const imageUrl = `http://localhost:3000/static/${file.name}`;
-  const tagsList = body.tags.split(' ');
+  const tagsList = body.tags.split(',');
   body.tags = tagsList;
   const newblog = await blogModel.add({
     ...body,
@@ -48,6 +48,7 @@ export const createBlog = async (body, req, userId) => {
 // get blog
 export const getBlogs = async (query, userId) => {
   logger.log(level.info, `>> get blog repo`);
+
   const docLength = await blogModel.count({ user_id: userId });
   const blogs = await blogModel.aggregate(
     [
@@ -84,8 +85,57 @@ export const getBlogs = async (query, userId) => {
   data = { error: false, message: 'succ_02', data: blogs, totalDocs: docLength };
   return data;
 };
-// update blog
 
+//get searched blogs
+export const getSearchBlog = async (query) => {
+  logger.log(level.info, `>> get search blog repo`);
+
+  // const docLength = await blogModel.count({ user_id: userId });
+  const blogs = await blogModel.aggregate(
+    [
+      {
+        $match: {
+          $or: [
+            { title: { $regex: new RegExp(query.toLowerCase(), 'i') } },
+            { category: { $regex: new RegExp(query.toLowerCase(), 'i') } },
+            { tags: { $in: [query.toLowerCase()] } }
+          ]
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user_id',
+          foreignField: 'user_id',
+          as: 'user'
+        }
+      },
+      {
+        $sort: {
+          created_at: -1
+        }
+      }
+    ],
+    null,
+    {
+      page: +query.page,
+      limit: +query.limit
+    }
+  );
+
+  let data = {};
+  if (!blogs || blogs.length <= 0) {
+    data = {
+      error: true,
+      message: 'No blogs Found!!'
+    };
+    return data;
+  }
+
+  data = { error: false, message: 'succ_02', data: blogs };
+  return data;
+};
+// update blog
 export const updateBlog = async (body, userId, blogId, req) => {
   logger.log(level.info, `>> update blog repo`);
   const blogs = await blogModel.get({
@@ -112,9 +162,10 @@ export const updateBlog = async (body, userId, blogId, req) => {
     imageUrl = `http://localhost:3000/static/${file.name}`;
   }
 
-  const tagsList = body.tags.split(' ');
+  const tagsList = body.tags.split(',');
   body.tags = tagsList;
-  console.log(imageUrl);
+
+  // console.log(imageUrl);
   if (imageUrl === '') {
     body.image = blogs.image;
   } else {
@@ -203,6 +254,7 @@ export const getBlogById = async (id) => {
         blog_id: id
       }
     },
+
     {
       $lookup: {
         from: 'users',

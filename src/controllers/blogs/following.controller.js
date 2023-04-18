@@ -11,6 +11,7 @@ import { validationResult } from 'express-validator';
 import * as followingRepo from '../../repositories/blogs/following';
 // import { constants as APP_CONST } from '../../constant/application';
 
+//create following
 export const createFollowing = async (req, resp) => {
   logger.log(level.debug, '>>Create Likes');
   const errors = validationResult(req);
@@ -27,7 +28,7 @@ export const createFollowing = async (req, resp) => {
     serverError(resp);
   }
 };
-// Get Blog
+// Get following
 export const getFollowing = async (req, resp) => {
   logger.log(level.debug, '>>Get Likes');
   try {
@@ -51,7 +52,8 @@ export const getMyFollowing = async (req, resp) => {
   }
 };
 
-export const unFollowUser =async(req, resp)=>{
+//unfollow (delete following relationship)
+export const unFollowUser = async (req, resp) => {
   logger.log(level.debug, '>>Delete Blog');
   try {
     const { user_id } = req.currentUser;
@@ -61,4 +63,4 @@ export const unFollowUser =async(req, resp)=>{
     logger.log(level.error, `Delete Blog error=${error}`);
     serverError(resp);
   }
-}
+};

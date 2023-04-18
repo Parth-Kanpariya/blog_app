@@ -2,36 +2,37 @@
 /* eslint-disable array-callback-return */
 import React, { useEffect, useState } from 'react';
 import BlogCard from './BlogCard';
-import { getBlogService } from '../services/blogService';
+import { getBlogService, getFilteredBlogService } from '../services/blogService';
 
 function BlogList({ id, query }) {
   const [Blogs, setBlogs] = useState([]);
+  const [filteredBlogs, setFilteredBlogs] = useState([]);
   const user_id = localStorage.userId;
   useEffect(() => {
     const fetchBlogList = async () => {
       const BlogList = await getBlogService(id);
       setBlogs(BlogList.data.data);
+      const filteredBlogs = await getFilteredBlogService(query);
+      setFilteredBlogs(filteredBlogs.data.data);
     };
     fetchBlogList();
-  }, []);
+  }, [query]);
 
-  const filteredBlog = Blogs.filter((blog) => {
-    return (
-      blog.title.toLowerCase().includes(query?.toLowerCase() || '') ||
-      blog?.tags.find((tag) => tag?.toLowerCase().includes(query?.toLowerCase() || '')) ||
-      blog.category.toLowerCase().includes(query?.toLowerCase() || '')
-    );
-  });
-
-  if (Blogs.length === 0) {
+  if (Blogs?.length === 0) {
     return;
   }
 
   return (
     <div>
       {id === undefined
-        ? filteredBlog?.map((blog) => <BlogCard key={blog.blog_id} blog={blog} />)
-        : filteredBlog?.map((blog) => {
+        ? filteredBlogs?.length > 0
+          ? filteredBlogs?.map((blog) => {
+              return <BlogCard key={blog.blog_id} blog={blog} />;
+            })
+          : Blogs?.map((blog) => {
+              return <BlogCard key={blog.blog_id} blog={blog} />;
+            })
+        : Blogs?.map((blog) => {
             if (blog.user_id === user_id) {
               return <BlogCard key={blog.blog_id} blog={blog} />;
             }

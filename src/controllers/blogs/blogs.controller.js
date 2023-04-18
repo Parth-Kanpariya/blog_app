@@ -29,6 +29,7 @@ export const createBlog = async (req, resp) => {
 // Get Blog
 export const getBlogs = async (req, resp) => {
   logger.log(level.debug, '>>Get Blogs');
+
   try {
     const { user_id } = req.currentUser;
     const blogs = await blogRepo.getBlogs(req.query, user_id);
@@ -43,6 +44,17 @@ export const getBlogById = async (req, resp) => {
   logger.log(level.debug, '>>Get Blogs');
   try {
     const blogs = await blogRepo.getBlogById(req.params.id);
+    successResponse(resp, blogs);
+  } catch (error) {
+    logger.log(level.error, `Get Blog error=${error}`);
+    serverError(resp);
+  }
+};
+//get filtered blogs
+export const getSearchBlogs = async (req, resp) => {
+  logger.log(level.debug, '>>Get filtered Blogs');
+  try {
+    const blogs = await blogRepo.getSearchBlog(req.params.id);
     successResponse(resp, blogs);
   } catch (error) {
     logger.log(level.error, `Get Blog error=${error}`);

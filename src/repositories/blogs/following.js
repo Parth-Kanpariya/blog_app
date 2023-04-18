@@ -3,10 +3,22 @@ import { logger, level } from '../../config/logger';
 import userModel from '../../models/user';
 import followingModel from '../../models/following';
 
-// create blog
+// create following
 export const createFollowing = async (userId, blogUserId) => {
-  logger.log(level.info, `>> Create Like repo body=${JSON.stringify()}`);
+  logger.log(level.info, `>> Create following repo body=${JSON.stringify()}`);
   let data = {};
+  const followingExist = await followingModel.isExist({
+    user_id: blogUserId,
+    follower_id: userId
+  });
+  if (followingExist) {
+    data = {
+      error: true,
+      message: 'relation Already exist!'
+    };
+    return data;
+  }
+
   const newFollowing = await followingModel.add({
     user_id: blogUserId,
     follower_id: userId
@@ -19,9 +31,9 @@ export const createFollowing = async (userId, blogUserId) => {
 
   return data;
 };
-// get blog
+// get following
 export const getFollowing = async (query, userId, blogUserId) => {
-  logger.log(level.info, `>> get like repo`);
+  logger.log(level.info, `>> get following repo`);
   const docLength = await followingModel.count();
 
   const followings = await userModel.aggregate(
@@ -137,7 +149,7 @@ export const getMyFollowing = async (query, userId) => {
 };
 
 export const unFolloweUser = async (userId, blogId) => {
-  logger.log(level.info, `>> Delete blog repo`);
+  logger.log(level.info, `>> Delete following repo`);
   const blogs = await followingModel.get({
     user_id: blogId,
     follower_id: userId
@@ -146,14 +158,14 @@ export const unFolloweUser = async (userId, blogId) => {
   if (!blogs || blogs.length <= 0) {
     data = {
       error: true,
-      message: 'No blog Found to delete!!'
+      message: 'No following Found to delete!!'
     };
     return data;
   }
   await followingModel.delete({ follower_id: userId, user_id: blogId });
 
   data = {
-    message: 'blog deleted!!'
+    message: 'following deleted!!'
   };
   return data;
 };
